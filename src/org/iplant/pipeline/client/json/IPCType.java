@@ -17,6 +17,7 @@ package org.iplant.pipeline.client.json;
 
 import java.io.Serializable;
 
+
 public class IPCType implements Serializable {
 
 	/**

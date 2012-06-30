@@ -31,6 +31,7 @@ public class Input extends IPCType implements Comparable<Input> {
 	private int order;
 	private String displayType;
 	private String type;
+	private String ID;
 
 	public Input(int id, String description, String name, String value, String flag, boolean required, int order, String displayType, String type) {
 		this.defaultValue = value;
@@ -141,6 +142,14 @@ public class Input extends IPCType implements Comparable<Input> {
 		Input in= new Input(this.id,description,name,defaultValue,flag,required,order,displayType,type);
 		in.setValue(getValue());
 		return in;
+	}
+
+	public String getID() {
+		return ID;
+	}
+
+	public void setID(String iD) {
+		ID = iD;
 	}
 
 }

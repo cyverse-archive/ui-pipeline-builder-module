@@ -26,6 +26,7 @@ public class Output extends IPCType {
 	private String type;
 	private String description;
 	private String name;
+	private String ID;
 	public Output(){}
 	public Output(String name,String type,String description,String value,int id){
 		this.name=name;
@@ -65,6 +66,12 @@ public class Output extends IPCType {
 		ret.setValue(value);
 		ret.setType(type);
 		return ret;
+	}
+	public String getID() {
+		return ID;
+	}
+	public void setID(String iD) {
+		ID = iD;
 	}
 	
 }

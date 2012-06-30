@@ -32,6 +32,7 @@ public class App extends IPCType{
 	}
 
 	private int publicId;
+	private String ID;
 
 	public App(int id) {
 		this.id = id;
@@ -152,6 +153,10 @@ public class App extends IPCType{
 
 	public void setInputs(Vector<Input> inputs2) {
 		inputs=inputs2;
+	}
+
+	public void setID(String id) {
+		ID=id;
 	}
 	
 }

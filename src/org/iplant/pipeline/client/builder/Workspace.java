@@ -21,7 +21,9 @@ import org.iplant.pipeline.client.SC;
 import org.iplant.pipeline.client.ValueListener;
 import org.iplant.pipeline.client.dnd.DragCreator;
 import org.iplant.pipeline.client.dnd.DropListener;
+import org.iplant.pipeline.client.json.App;
 import org.iplant.pipeline.client.json.IPCType;
+import org.iplant.pipeline.client.json.PipeApp;
 import org.iplant.pipeline.client.json.PipeComponent;
 import org.iplant.pipeline.client.json.Pipeline;
 import org.iplant.pipeline.client.json.PipelineApp;
@@ -65,7 +67,6 @@ public class Workspace extends FlowPanel implements DropListener, BlockChangeLis
 
 	public void drop(IPCType reco) {
 		IPCType record = DragCreator.getDragSource();
-		
 		
 			if(pipe.getName().equals("Switch")){
 				if(record instanceof PipelineApp){
@@ -112,21 +113,15 @@ public class Workspace extends FlowPanel implements DropListener, BlockChangeLis
 		// }
 		// } else
 
-		if (record instanceof UserApp) {
-			UserApp wrapper = (UserApp) record;
-			//TODO:replace this with the data from ipc app json
-//			wrapperService.getAppFromId(wrapper.getAppId(), new MyAsyncCallback<App>() {
-//				@Override
-//				public void success(App result) {
-//					PipeApp wrap = new PipeApp(-1, result.getId(), wrappers.size());
-//					wrap.setApp(result);
-//					wrappers.add(wrap);
-//					add(new Block(wrap, Workspace.this));
-//					for (int i = 0; i < wrappers.size(); i++) {
-//						wrappers.get(i).setPosition(i);
-//					}
-//				}
-//			});
+		if (record instanceof App) {
+			App app = (App) record;
+			PipeApp wrap = new PipeApp(-1, app.getId(), wrappers.size());
+			wrap.setApp(app);
+			wrappers.add(wrap);
+			add(new Block(wrap, Workspace.this));
+			for (int i = 0; i < wrappers.size(); i++) {
+				wrappers.get(i).setPosition(i);
+			}
 		} else if (record instanceof PipeComponent) {
 			// assume this is being moved and add to the bottom of the stack
 			PipeComponent wrap = (PipeComponent) record;

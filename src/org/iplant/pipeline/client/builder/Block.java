@@ -20,6 +20,7 @@ import java.util.Vector;
 import org.iplant.pipeline.client.dnd.DragCreator;
 import org.iplant.pipeline.client.dnd.DragListener;
 import org.iplant.pipeline.client.images.Resources;
+import org.iplant.pipeline.client.json.App;
 import org.iplant.pipeline.client.json.IPCType;
 import org.iplant.pipeline.client.json.Input;
 import org.iplant.pipeline.client.json.Output;
@@ -29,7 +30,6 @@ import org.iplant.pipeline.client.json.PipelineApp;
 import org.iplant.pipeline.client.json.UserApp;
 import org.iplant.pipeline.client.ui.Button;
 import org.iplant.pipeline.client.ui.Seprator;
-
 
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -47,6 +47,7 @@ public class Block extends Composite implements DragListener {
 	private BlockChangeListener listener;
 	FlowPanel temp = new FlowPanel();
 	private Workspace workspace;
+
 	public Block(PipeComponent app, BlockChangeListener listener) {
 		this.listener = listener;
 		startBlock.setStyleName("block");
@@ -71,7 +72,7 @@ public class Block extends Composite implements DragListener {
 
 		startBlock.add(expandInputs);
 		startBlock.add(inputPanel);
-		HTML img = new HTML("<img src='"+Resources.INSTANCE.wrench().getSafeUri().asString()+"'/>");
+		HTML img = new HTML("<img src='" + Resources.INSTANCE.wrench().getSafeUri().asString() + "'/>");
 		startBlock.add(img);
 		img.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
@@ -109,7 +110,7 @@ public class Block extends Composite implements DragListener {
 			return;
 		Vector<PipeComponent> apps = listener.getPreviousApps(app.getPosition());
 		outer: for (Input input : inputs) {
-			if (input.getType().startsWith("File") || input.getType().startsWith("List")||app.getName().equals("Switch")) {
+			if (input.getType().startsWith("File") || input.getType().startsWith("List") || app.getName().equals("Switch")) {
 				InputBlock block = new InputBlock(input);
 				inputPanel.add(block);
 				if (!input.getValue().equals("")) {
@@ -134,7 +135,6 @@ public class Block extends Composite implements DragListener {
 
 	}
 
-
 	public void edit() {
 		if (app instanceof PipeApp) {
 			final PipeApp app = (PipeApp) this.app;
@@ -142,31 +142,32 @@ public class Block extends Composite implements DragListener {
 			bar.add(new Seprator());
 			bar.add(new Button("Job Options").setClickHandler(new ClickHandler() {
 				public void onClick(ClickEvent event) {
-//					options.show();
+					// options.show();
 				}
 			}));
 			bar.add(new Seprator());
 			bar.add(new OutputBlock(new Output("User Input", "", "Make the user fill this field out", "", -2)));
 			bar.add(new Seprator());
-//			Inputs inputs = new Inputs(app.getApp());
-//			SC.ask("Configure inputs for step: " + app.getApp().getName(), inputs, bar, new ValueListener<Boolean>() {
-//				public void returned(Boolean ret) {
-//					if (ret) {
-//						app.setJobOptions(options.getSpecs());
-//					}
-//				}
-//			});
+			// Inputs inputs = new Inputs(app.getApp());
+			// SC.ask("Configure inputs for step: " + app.getApp().getName(),
+			// inputs, bar, new ValueListener<Boolean>() {
+			// public void returned(Boolean ret) {
+			// if (ret) {
+			// app.setJobOptions(options.getSpecs());
+			// }
+			// }
+			// });
 		} else if (app instanceof PipelineApp) {
-			if(workspace==null){
-			PipelineApp app = (PipelineApp) this.app;
-			workspace = new Workspace(app.getPipeline());
-			// temp.getElement().getStyle().setPosition(Position.ABSOLUTE);
-			workspace.setStyleName("sub-workspace");
-			
-			temp.add(workspace);
-			}else{
+			if (workspace == null) {
+				PipelineApp app = (PipelineApp) this.app;
+				workspace = new Workspace(app.getPipeline());
+				// temp.getElement().getStyle().setPosition(Position.ABSOLUTE);
+				workspace.setStyleName("sub-workspace");
+
+				temp.add(workspace);
+			} else {
 				temp.remove(workspace);
-				workspace=null;
+				workspace = null;
 			}
 		}
 	}
@@ -198,22 +199,16 @@ public class Block extends Composite implements DragListener {
 		if (rec instanceof PipeComponent) {
 			// assume that the source is being moved
 			PipeComponent src = (PipeComponent) rec;
-			if(src.getPosition()>=0)
-			listener.blockMoved(src, app.getPosition());
-			else{
+			if (src.getPosition() >= 0)
+				listener.blockMoved(src, app.getPosition());
+			else {
 				listener.blockAdded(src, app.getPosition());
 			}
-		} else if (rec instanceof UserApp) {
-			UserApp appU = (UserApp) rec;
-			//TODO:when i get the json information add this app to the workspace
-//			appService.getAppFromId(appU.getAppId(), new MyAsyncCallback<App>() {
-//				@Override
-//				public void success(App result) {
-//					PipeApp wrap = new PipeApp(-1, result.getId(), app.getPosition());
-//					wrap.setApp(result);
-//					listener.blockAdded(wrap, app.getPosition());
-//				}
-//			});
+		} else if (rec instanceof App) {
+			App result = (App) rec;
+			PipeApp wrap = new PipeApp(-1, result.getId(), app.getPosition());
+			wrap.setApp(result);
+			listener.blockAdded(wrap, app.getPosition());
 		}
 		removeStyleName("hoverO");
 

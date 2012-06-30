@@ -15,7 +15,10 @@
  */
 package org.iplant.pipeline.client.dnd;
 
+import org.iplant.pipeline.client.json.App;
 import org.iplant.pipeline.client.json.IPCType;
+import org.iplant.pipeline.client.json.Input;
+import org.iplant.pipeline.client.json.Output;
 
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.user.client.ui.Image;
@@ -65,6 +68,25 @@ public class DragCreator {
 			if (e.stopPropagation)
 				e.stopPropagation(); // stops the browser from redirecting...why???
 
+			var data = e.dataTransfer.getData('text/plain');
+			if(isNaN(data)){
+				//item is an json app from iplant
+				var obj = eval("("+data+")");
+				var app =@org.iplant.pipeline.client.dnd.DragCreator::createApp(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)(obj.name,obj.description,obj.id);
+				for(var i=0;i<obj.inputs.length;i++){
+					var input = obj.inputs[i];
+					if(input.data_object!=null){
+						@org.iplant.pipeline.client.dnd.DragCreator::addInput(Lorg/iplant/pipeline/client/json/App;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;)(app,input.label,input.description,input.id,input.data_object.required,"File:"+input.data_object.format);
+					}
+				}
+				for(var i=0;i<obj.outputs.length;i++){
+					var output = obj.outputs[i];
+					if(output.data_object!=null){
+						@org.iplant.pipeline.client.dnd.DragCreator::addOutput(Lorg/iplant/pipeline/client/json/App;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)(app,output.label,output.description,output.id,output.data_object.format);
+					}
+				}
+				@org.iplant.pipeline.client.dnd.DragCreator::draggedRecord =app; 
+			}
 			// this / e.target is current target element.
 			listener.@org.iplant.pipeline.client.dnd.DragListener::drop(Lorg/iplant/pipeline/client/json/IPCType;)(rec);
 
@@ -88,6 +110,12 @@ public class DragCreator {
 	public static native void addDrop(Element element, IPCType rec, DropListener listener) /*-{
 
 		function handleDragOver(e) {
+			if(e.dataTransfer.getData('text/plain')!=''){
+				alert(e.dataTransfer.getData('text/plain'));
+				return;
+			}
+			
+			
 			listener.@org.iplant.pipeline.client.dnd.DropListener::dragOver(Lorg/iplant/pipeline/client/json/IPCType;)(rec);
 
 			if (e.preventDefault) {
@@ -101,6 +129,10 @@ public class DragCreator {
 
 		function handleDragEnter(e) {
 			// this / e.target is the current hover target.
+			if(e.dataTransfer.getData('text/plain')!==''){
+				alert(e.dataTransfer.getData('text/plain'));
+				return;
+			}
 			listener.@org.iplant.pipeline.client.dnd.DropListener::dragEnter(Lorg/iplant/pipeline/client/json/IPCType;)(rec);
 		}
 
@@ -109,12 +141,32 @@ public class DragCreator {
 		}
 		function handleDrop(e) {
 			// this / e.target is current target element.
+			var data = e.dataTransfer.getData('text/plain');
+			if(isNaN(data)){
+				//item is an json app from iplant
+				var obj = eval("("+data+")");
+				var app =@org.iplant.pipeline.client.dnd.DragCreator::createApp(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)(obj.name,obj.description,obj.id);
+				for(var i=0;i<obj.inputs.length;i++){
+					var input = obj.inputs[i];
+					if(input.data_object!=null){
+						@org.iplant.pipeline.client.dnd.DragCreator::addInput(Lorg/iplant/pipeline/client/json/App;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;)(app,input.label,input.description,input.id,input.data_object.required,"File:"+input.data_object.format);
+					}
+				}
+				for(var i=0;i<obj.outputs.length;i++){
+					var output = obj.outputs[i];
+					if(output.data_object!=null){
+						@org.iplant.pipeline.client.dnd.DragCreator::addOutput(Lorg/iplant/pipeline/client/json/App;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)(app,output.label,output.description,output.id,output.data_object.format);
+					}
+				}
+				@org.iplant.pipeline.client.dnd.DragCreator::draggedRecord =app; 
+			}
+
 			listener.@org.iplant.pipeline.client.dnd.DropListener::drop(Lorg/iplant/pipeline/client/json/IPCType;)(rec);
 
 			if (e.stopPropagation) {
 				e.stopPropagation(); // stops the browser from redirecting.
 			}
-
+	
 			// See the section on the DataTransfer object.
 
 			return false;
@@ -130,6 +182,34 @@ public class DragCreator {
 		return draggedRecord;
 	}
 
+	private static App createApp(String name,String description,String id){
+		App app = new App();
+		app.setName(name);
+		app.setDescription(description);
+		app.setId(1);
+		app.setID(id);
+		return app;
+	}
+	
+	private static void addInput(App app,String name,String description,String id,boolean required,String type){
+		Input input = new Input();
+		input.setName(name);
+		input.setDescription(description);
+		input.setId(1);
+		input.setRequired(required);
+		input.setType(type);
+		input.setID(id);
+		app.addInput(input);
+	}
+	private static void addOutput(App app,String name,String description,String id,String type){
+		Output out = new Output();
+		out.setName(name);
+		out.setType(type);
+		out.setDescription(description);
+		out.setID(id);
+		app.addOutput(out);
+	}
+	
 	public static Element getImageElement(String src) {
 		Image img = new Image(src);
 		img.setWidth("20px");
