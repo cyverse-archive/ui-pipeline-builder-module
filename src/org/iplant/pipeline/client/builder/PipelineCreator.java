@@ -83,5 +83,14 @@ public class PipelineCreator extends Composite {
 		workspace.setWidth("100%");
 		main.insert(workspace, 0);
 	}
+	
+	/**
+	 * This will return the json that represents the pipeline that is being built.
+	 * 
+	 * @return the json in sting format of the new pipeline
+	 */
+	public String getPipelineJson(){
+		return "";
+	}
 
 }
