@@ -26,6 +26,11 @@ import org.iplant.pipeline.client.json.PipeApp;
 import org.iplant.pipeline.client.json.PipeComponent;
 import org.iplant.pipeline.client.json.Pipeline;
 
+import com.google.gwt.dev.jjs.ast.js.JsonArray;
+import com.google.gwt.json.client.JSONArray;
+import com.google.gwt.json.client.JSONNumber;
+import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 
@@ -97,20 +102,18 @@ public class PipelineCreator extends Composite {
 	 * 
 	 * @return the json in sting format of the new pipeline
 	 */
-	public String getPipelineJson() {
-		String ret = "{\"apps\": [";
+	public JSONObject getPipelineJson() {
+		JSONObject ret = new JSONObject();
+		JSONArray appsArray = new JSONArray();
 		Vector<PipeComponent> steps = workspace.getPipeline().getSteps();
-		boolean putC = false;
+		int i=0;
 		for (PipeComponent step : steps) {
 			App app = ((PipeApp) step).getApp();
-			if (putC)
-				ret += ",";
-			putC = true;
-			ret += "{";
-			ret += "\"id\":\"" + app.getID() + "\",";
-			ret += "\"name\":\"" + app.getName() + "\",";
-			ret += "\"description\":\"" + app.getDescription() + "\",";
-			ret += "\"step\":" + step.getPosition() + ",";
+			JSONObject jsonApp = new JSONObject();
+			jsonApp.put("id", new JSONString(app.getID()));
+			jsonApp.put("name", new JSONString(app.getName()));
+			jsonApp.put("description", new JSONString(app.getDescription()));
+			jsonApp.put("step", new JSONNumber(step.getPosition()));
 			HashMap<PipeComponent, ArrayList<Input>> mappings = new HashMap<PipeComponent, ArrayList<Input>>();
 			for (Input input : step.getInputs()) {
 				if (input.getMapped() != null) {
@@ -122,25 +125,30 @@ public class PipelineCreator extends Composite {
 					mappings.put(parent, maps);
 				}
 			}
-			ret += "\"mappings\":[";
+			JSONArray jsonMappings = new JSONArray();
+			jsonApp.put("mappings", jsonMappings);
 			Iterator<PipeComponent> it = mappings.keySet().iterator();
-			boolean added = false;
+			int mappingsI =0;
 			while (it.hasNext()) {
-				if (added)
-					ret += ",";
-				added = true;
 				PipeComponent mappedTo = it.next();
 				App mappedApp = ((PipeApp) mappedTo).getApp();
-				ret += "{\"step\":" + mappedTo.getPosition() + ",\"id\":\"" + mappedApp.getID() + "\"";
+				JSONObject jsonMap = new JSONObject();
+				jsonMap.put("step", new JSONNumber(mappedTo.getPosition()));
+				jsonMap.put("id", new JSONString(mappedApp.getID()));
 				ArrayList<Input> inputs = mappings.get(mappedTo);
+				int mapI=0;
+				JSONArray jsonMapA = new JSONArray();
 				for (Input input : inputs) {
-					ret += ",\"" + input.getID() + "\":\"" + input.getMapped().getID() + "\"";
+					JSONObject mapO = new JSONObject();
+					mapO.put(input.getID(), new JSONString(input.getMapped().getID() ));
+					jsonMapA.set(mapI++, mapO);
 				}
-				ret += "}";
+				jsonMap.put("map", jsonMapA);
+				jsonMappings.set(mappingsI++, jsonMap);
 			}
-			ret += "]}";
+			appsArray.set(i++,jsonApp);
 		}
-		ret += "]}";
+		ret.put("apps", appsArray);
 		return ret;
 	}
 
