@@ -27,6 +27,8 @@ public class Output extends IPCType {
 	private String description;
 	private String name;
 	private String ID;
+	private String appId;
+	private PipeComponent parent;
 	public Output(){}
 	public Output(String name,String type,String description,String value,int id){
 		this.name=name;
@@ -73,5 +75,17 @@ public class Output extends IPCType {
 	public void setID(String iD) {
 		ID = iD;
 	}
+	public String getAppId(){
+		return appId;
+	}
 	
+	public void setParent(PipeComponent parent){
+		this.parent=parent;
+	}
+	public PipeComponent getParent(){
+		return parent;
+	}
+	public void setAppId(String appId){
+		this.appId=appId;
+	}
 }

@@ -32,6 +32,7 @@ public class Input extends IPCType implements Comparable<Input> {
 	private String displayType;
 	private String type;
 	private String ID;
+	private Output mapped;
 
 	public Input(int id, String description, String name, String value, String flag, boolean required, int order, String displayType, String type) {
 		this.defaultValue = value;
@@ -151,5 +152,14 @@ public class Input extends IPCType implements Comparable<Input> {
 	public void setID(String iD) {
 		ID = iD;
 	}
+
+	public Output getMapped() {
+		return mapped;
+	}
+
+	public void setMapped(Output mapped) {
+		this.mapped = mapped;
+	}
+	
 
 }

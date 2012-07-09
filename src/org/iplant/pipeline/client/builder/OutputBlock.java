@@ -20,6 +20,7 @@ import org.iplant.pipeline.client.dnd.DragCreator;
 import org.iplant.pipeline.client.dnd.DragListener;
 import org.iplant.pipeline.client.json.IPCType;
 import org.iplant.pipeline.client.json.Output;
+import org.iplant.pipeline.client.json.PipeComponent;
 
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.MouseOutEvent;
@@ -33,9 +34,10 @@ import com.google.gwt.user.client.ui.PopupPanel;
 public class OutputBlock extends Composite implements DragListener, MouseOverHandler, MouseOutHandler {
 
 	private PopupPanel toolTip;
-
-	public OutputBlock(Output output) {
+	private Output output;
+	public OutputBlock(Output output,PipeComponent parent) {
 		HTML name = new HTML();
+		output.setParent(parent);
 		name.setStyleName("output-block");
 		name.setHTML(output.getName());
 		initWidget(name);
@@ -46,11 +48,16 @@ public class OutputBlock extends Composite implements DragListener, MouseOverHan
 		toolTip.setStyleName("tooltip-small");
 		addDomHandler(this, MouseOutEvent.getType());
 		addDomHandler(this, MouseOverEvent.getType());
+		this.output=output;
 	}
 
 	public void dragStart(IPCType record) {
 		getElement().getStyle().setOpacity(.5);
 	}
+	public Output getOutput(){
+		return output;
+	}
+	
 
 	public void dragEnter(IPCType record) {
 	}

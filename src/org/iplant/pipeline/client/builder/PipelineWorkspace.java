@@ -157,11 +157,11 @@ public class PipelineWorkspace extends Composite {
 		loadNonBlocks();
 		workspace.loadPipeline(pipeline);
 		userInputs.clear();
-		for(Input input:pipeline.getInputs()){
-			userInputs.add(new OutputBlock(new Output(input.getName(), input.getType(), input.getDescription(), input.getDefaultValue(), input.getId())));
-		}
-		userInputs.add(new OutputBlock(new Output("User Input", "", "This will force the user to provide this file", "", -1)));
-		userInputs.add(new OutputBlock(new Output("Working Folder", "Folder", "This will be the working folder that the user provides", "", -1)));
+//		for(Input input:pipeline.getInputs()){
+//			userInputs.add(new OutputBlock(new Output(input.getName(), input.getType(), input.getDescription(), input.getDefaultValue(), input.getId())));
+//		}
+//		userInputs.add(new OutputBlock(new Output("User Input", "", "This will force the user to provide this file", "", -1)));
+//		userInputs.add(new OutputBlock(new Output("Working Folder", "Folder", "This will be the working folder that the user provides", "", -1)));
 		
 	}
 
@@ -195,13 +195,13 @@ public class PipelineWorkspace extends Composite {
 
 
 	public void saveInputs(Vector<Input> data) {
-		pipeline.setInputs(data);
-		userInputs.clear();
-		for(Input input:pipeline.getInputs()){
-			userInputs.add(new OutputBlock(new Output(input.getName(), input.getType(), input.getDescription(), input.getDefaultValue(), input.getId())));
-		}
-		userInputs.add(new OutputBlock(new Output("User Input", "", "This will force the user to provide this file", "", -1)));
-		userInputs.add(new OutputBlock(new Output("Working Folder", "Folder", "This will be the working folder that the user provides", "", -1)));
+//		pipeline.setInputs(data);
+//		userInputs.clear();
+//		for(Input input:pipeline.getInputs()){
+//			userInputs.add(new OutputBlock(new Output(input.getName(), input.getType(), input.getDescription(), input.getDefaultValue(), input.getId())));
+//		}
+//		userInputs.add(new OutputBlock(new Output("User Input", "", "This will force the user to provide this file", "", -1)));
+//		userInputs.add(new OutputBlock(new Output("Working Folder", "Folder", "This will be the working folder that the user provides", "", -1)));
 		
 	}
 

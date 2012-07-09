@@ -108,36 +108,36 @@ public class Block extends Composite implements DragListener {
 		Vector<Input> inputs = app.getInputs();
 		if (listener == null)
 			return;
-		Vector<PipeComponent> apps = listener.getPreviousApps(app.getPosition());
-		outer: for (Input input : inputs) {
-			if (input.getType().startsWith("File") || input.getType().startsWith("List") || app.getName().equals("Switch")) {
+//		Vector<PipeComponent> apps = listener.getPreviousApps(app.getPosition());
+		for (Input input : inputs) {
+			if (input.getType().startsWith("File")) {
 				InputBlock block = new InputBlock(input);
 				inputPanel.add(block);
-				if (!input.getValue().equals("")) {
-					block.setInputValue(new Output(input.getValue(), "", "", input.getValue(), -1));
-					continue outer;
-				}
-				if (input.getType().equals("File"))
-					continue outer;
-				for (PipeComponent wrap : apps) {
-					for (Output output : wrap.getOutputs()) {
-						if (input.getType().length() <= 5 || input.getType().substring(5).startsWith(output.getType())) {
-							block.setInputValue(output);
-							continue outer;
-						}
-					}
-				}
+//				if (!input.getValue().equals("")) {
+//					block.setInputValue(new Output(input.getValue(), "", "", input.getValue(), -1));
+//					continue outer;
+//				}
+//				if (input.getType().equals("File"))
+//					continue outer;
+//				for (PipeComponent wrap : apps) {
+//					for (Output output : wrap.getOutputs()) {
+//						if (input.getType().length() <= 5 || input.getType().substring(5).startsWith(output.getType())) {
+//							block.setInputValue(output);
+//							continue outer;
+//						}
+//					}
+//				}
 			}
 		}
 		for (Output output : app.getOutputs()) {
-			outputPanel.add(new OutputBlock(output));
+			outputPanel.add(new OutputBlock(output,app));
 		}
 
 	}
 
 	public void edit() {
 		if (app instanceof PipeApp) {
-			final PipeApp app = (PipeApp) this.app;
+//			final PipeApp app = (PipeApp) this.app;
 			HorizontalPanel bar = new HorizontalPanel();
 			bar.add(new Seprator());
 			bar.add(new Button("Job Options").setClickHandler(new ClickHandler() {
@@ -146,7 +146,7 @@ public class Block extends Composite implements DragListener {
 				}
 			}));
 			bar.add(new Seprator());
-			bar.add(new OutputBlock(new Output("User Input", "", "Make the user fill this field out", "", -2)));
+			//bar.add(new OutputBlock(new Output("User Input", "", "Make the user fill this field out", "", -2)));
 			bar.add(new Seprator());
 			// Inputs inputs = new Inputs(app.getApp());
 			// SC.ask("Configure inputs for step: " + app.getApp().getName(),

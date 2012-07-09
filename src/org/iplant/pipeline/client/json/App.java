@@ -159,4 +159,7 @@ public class App extends IPCType{
 		ID=id;
 	}
 	
+	public String getID(){
+		return ID; 
+	}
 }
