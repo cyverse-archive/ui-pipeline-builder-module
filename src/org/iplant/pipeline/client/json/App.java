@@ -1,8 +1,9 @@
 package org.iplant.pipeline.client.json;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Vector;
+
+import com.google.gwt.json.client.JSONArray;
 
 
 public class App extends IPCType{
@@ -16,20 +17,10 @@ public class App extends IPCType{
 	private String name;
 	private String description;
 	private String creator;
-	private boolean isPublic;
 	private String program;
 	private boolean stared = false;
-	private int creatorId;
-	private int rating = 0;
-	private HashMap<String, String> envVars;
-
-	public void setEnvVars(HashMap<String, String> envVars) {
-		this.envVars = envVars;
-	}
-
-	public void setRating(int rating) {
-		this.rating = rating;
-	}
+	private JSONArray inputJson;
+	private JSONArray outputJson;
 
 	private int publicId;
 	private String ID;
@@ -38,14 +29,12 @@ public class App extends IPCType{
 		this.id = id;
 		inputs = new Vector<Input>();
 		outputs = new Vector<Output>();
-		envVars = new HashMap<String, String>();
 	}
 
 	public App() {
 		this.id = 0;
 		inputs = new Vector<Input>();
 		outputs = new Vector<Output>();
-		envVars = new HashMap<String, String>();
 	}
 
 	public Vector<Input> getInputs() {
@@ -79,14 +68,6 @@ public class App extends IPCType{
 
 	public void addOutput(Output output) {
 		outputs.add(output);
-	}
-
-	public boolean isPublic() {
-		return isPublic;
-	}
-
-	public void setPublic(boolean isPublic) {
-		this.isPublic = isPublic;
 	}
 
 	public String getProgram() {
@@ -130,27 +111,6 @@ public class App extends IPCType{
 		return stared;
 	}
 
-	public int getRating() {
-		return rating;
-	}
-
-	public void setCreatorId(int creatorId) {
-		this.creatorId = creatorId;
-	}
-
-	public int getCreatorId() {
-		return creatorId;
-	}
-
-
-	public void addVar(String name, String value) {
-		envVars.put(name, value);
-	}
-
-	public HashMap<String, String> getEnvVars() {
-		return envVars;
-	}
-
 	public void setInputs(Vector<Input> inputs2) {
 		inputs=inputs2;
 	}
@@ -161,5 +121,21 @@ public class App extends IPCType{
 	
 	public String getID(){
 		return ID; 
+	}
+
+	public JSONArray getInputJson() {
+		return inputJson;
+	}
+
+	public void setInputJson(JSONArray inputJson) {
+		this.inputJson = inputJson;
+	}
+
+	public JSONArray getOutputJson() {
+		return outputJson;
+	}
+
+	public void setOutputJson(JSONArray outputJson) {
+		this.outputJson = outputJson;
 	}
 }

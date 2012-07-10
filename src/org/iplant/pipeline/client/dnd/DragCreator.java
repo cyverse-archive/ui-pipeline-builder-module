@@ -21,6 +21,10 @@ import org.iplant.pipeline.client.json.Input;
 import org.iplant.pipeline.client.json.Output;
 
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.json.client.JSONArray;
+import com.google.gwt.json.client.JSONBoolean;
+import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.ui.Image;
 
 
@@ -72,19 +76,7 @@ public class DragCreator {
 			if(isNaN(data)){
 				//item is an json app from iplant
 				var obj = eval("("+data+")");
-				var app =@org.iplant.pipeline.client.dnd.DragCreator::createApp(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)(obj.name,obj.description,obj.id);
-				for(var i=0;i<obj.inputs.length;i++){
-					var input = obj.inputs[i];
-					if(input.data_object!=null){
-						@org.iplant.pipeline.client.dnd.DragCreator::addInput(Lorg/iplant/pipeline/client/json/App;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;)(app,input.label,input.description,input.id,input.data_object.required,"File:"+input.data_object.format);
-					}
-				}
-				for(var i=0;i<obj.outputs.length;i++){
-					var output = obj.outputs[i];
-					if(output.data_object!=null){
-						@org.iplant.pipeline.client.dnd.DragCreator::addOutput(Lorg/iplant/pipeline/client/json/App;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)(app,output.label,output.description,output.id,output.data_object.format);
-					}
-				}
+				var app =@org.iplant.pipeline.client.dnd.DragCreator::createApp(Lcom/google/gwt/core/client/JavaScriptObject;)(obj);
 				@org.iplant.pipeline.client.dnd.DragCreator::draggedRecord =app; 
 			}
 			// this / e.target is current target element.
@@ -145,19 +137,7 @@ public class DragCreator {
 			if(isNaN(data)){
 				//item is an json app from iplant
 				var obj = eval("("+data+")");
-				var app =@org.iplant.pipeline.client.dnd.DragCreator::createApp(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)(obj.name,obj.description,obj.id);
-				for(var i=0;i<obj.inputs.length;i++){
-					var input = obj.inputs[i];
-					if(input.data_object!=null){
-						@org.iplant.pipeline.client.dnd.DragCreator::addInput(Lorg/iplant/pipeline/client/json/App;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;)(app,input.label,input.description,input.id,input.data_object.required,"File:"+input.data_object.format);
-					}
-				}
-				for(var i=0;i<obj.outputs.length;i++){
-					var output = obj.outputs[i];
-					if(output.data_object!=null){
-						@org.iplant.pipeline.client.dnd.DragCreator::addOutput(Lorg/iplant/pipeline/client/json/App;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)(app,output.label,output.description,output.id,output.data_object.format);
-					}
-				}
+				var app =@org.iplant.pipeline.client.dnd.DragCreator::createApp(Lcom/google/gwt/core/client/JavaScriptObject;)(obj);
 				@org.iplant.pipeline.client.dnd.DragCreator::draggedRecord =app; 
 			}
 
@@ -190,24 +170,48 @@ public class DragCreator {
 		app.setID(id);
 		return app;
 	}
-	
-	private static void addInput(App app,String name,String description,String id,boolean required,String type){
-		Input input = new Input();
-		input.setName(name);
-		input.setDescription(description);
-		input.setId(1);
-		input.setRequired(required);
-		input.setType(type);
-		input.setID(id);
-		app.addInput(input);
+	private static App createApp(com.google.gwt.core.client.JavaScriptObject json){
+		return createApp(new JSONObject(json));
 	}
-	private static void addOutput(App app,String name,String description,String id,String type){
-		Output out = new Output();
-		out.setName(name);
-		out.setType(type);
-		out.setDescription(description);
-		out.setID(id);
-		app.addOutput(out);
+	public static App createApp(JSONObject json){
+		App app = new App();
+		app.setName(((JSONString)json.get("name")).stringValue());
+		app.setDescription(((JSONString)json.get("description")).stringValue());
+		app.setId(1);
+		app.setID(((JSONString)json.get("id")).stringValue());
+		JSONArray inputs = (JSONArray) json.get("inputs");
+		app.setInputJson(inputs);
+		for(int i=0;i<inputs.size();i++){
+			Input input = new Input();
+			JSONObject obj = (JSONObject) inputs.get(i);
+			JSONObject dataObj = (JSONObject) obj.get("data_object");
+			if(dataObj!=null){
+				input.setName(((JSONString)dataObj.get("name")).stringValue());
+				input.setDescription(((JSONString)dataObj.get("description")).stringValue());
+				input.setId(1);
+				input.setRequired(((JSONBoolean)dataObj.get("required")).booleanValue());
+				input.setType("File:"+((JSONString)dataObj.get("format")).stringValue());
+				input.setID(((JSONString)dataObj.get("id")).stringValue());
+				app.addInput(input);
+			}
+		}
+		JSONArray outputs = (JSONArray) json.get("outputs");
+		app.setOutputJson(outputs);
+		for(int i=0;i<outputs.size();i++){
+			Output output = new Output();
+			JSONObject obj = (JSONObject) outputs.get(i);
+			JSONObject dataObj = (JSONObject) obj.get("data_object");
+			if(dataObj!=null){
+				output.setName(((JSONString)dataObj.get("name")).stringValue());
+				output.setDescription(((JSONString)dataObj.get("description")).stringValue());
+				output.setId(1);
+				output.setType(((JSONString)dataObj.get("format")).stringValue());
+				output.setID(((JSONString)dataObj.get("id")).stringValue());
+				app.addOutput(output);
+			}
+		}
+		
+		return app;
 	}
 	
 	public static Element getImageElement(String src) {

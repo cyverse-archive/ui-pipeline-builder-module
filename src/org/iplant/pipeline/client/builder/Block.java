@@ -113,6 +113,9 @@ public class Block extends Composite implements DragListener {
 			if (input.getType().startsWith("File")) {
 				InputBlock block = new InputBlock(input);
 				inputPanel.add(block);
+				if(input.getMapped()!=null){
+					block.setInputValue(input.getMapped());
+				}
 //				if (!input.getValue().equals("")) {
 //					block.setInputValue(new Output(input.getValue(), "", "", input.getValue(), -1));
 //					continue outer;

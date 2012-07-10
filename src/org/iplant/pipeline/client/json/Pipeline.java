@@ -35,6 +35,7 @@ public class Pipeline extends IPCType {
 	private Vector<Output> outputs;
 
 	public Pipeline() {
+		steps = new Vector<PipeComponent>();
 	}
 
 	/**

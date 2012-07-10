@@ -206,7 +206,6 @@ public class Workspace extends FlowPanel implements DropListener, BlockChangeLis
 
 		clear();
 		for (PipeComponent wrapper : wrappers) {
-			// if (wrapper instanceof PipeApp)
 			add(new Block(wrapper, this));
 		}
 	}
