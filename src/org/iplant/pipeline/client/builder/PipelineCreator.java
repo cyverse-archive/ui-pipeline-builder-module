@@ -86,9 +86,10 @@ public class PipelineCreator extends Composite {
 	// // inputs.addInput(input);
 	// }
 
-	// /**
-	// * @param result
-	// */
+	/**
+	 * This will load an existing pipeline into the creator.
+	 * @param json The json representation of a Pipeline
+	 */
 	public void loadPipeline(JSONObject json) {
 		main.remove(workspace);
 		workspace = new PipelineWorkspace(getPipelineFromJson(json));
