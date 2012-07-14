@@ -38,7 +38,7 @@ public class DragCreator {
 		function handleDragStart(e) {
 			var dragIcon = listener.@org.iplant.pipeline.client.dnd.DragListener::getDragImage(Lorg/iplant/pipeline/client/json/IPCType;)(rec);
 			e.dataTransfer.setDragImage(dragIcon, -10, -10);
-			e.dataTransfer.effectAllowed = 'copy'; // only dropEffect='copy' will be dropable
+			e.dataTransfer.effectAllowed = 'copy';
 			@org.iplant.pipeline.client.dnd.DragCreator::draggedRecord = rec;
 			listener.@org.iplant.pipeline.client.dnd.DragListener::dragStart(Lorg/iplant/pipeline/client/json/IPCType;)(rec);
 			if (element.getAttribute("data-downloadurl") != null) {
@@ -81,7 +81,7 @@ public class DragCreator {
 				var app = @org.iplant.pipeline.client.dnd.DragCreator::createApp(Lcom/google/gwt/core/client/JavaScriptObject;)(obj);
 				@org.iplant.pipeline.client.dnd.DragCreator::draggedRecord = app;
 			}
-			listener.@org.iplant.pipeline.client.dnd.DropListener::drop(Lorg/iplant/pipeline/client/json/IPCType;)(rec);
+			listener.@org.iplant.pipeline.client.dnd.DragListener::drop(Lorg/iplant/pipeline/client/json/IPCType;)(rec);
 		}
 
 		function handleDragEnd(e) {
