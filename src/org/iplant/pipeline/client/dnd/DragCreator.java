@@ -27,7 +27,6 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.ui.Image;
 
-
 public class DragCreator {
 
 	private static IPCType draggedRecord;
@@ -39,13 +38,13 @@ public class DragCreator {
 		function handleDragStart(e) {
 			var dragIcon = listener.@org.iplant.pipeline.client.dnd.DragListener::getDragImage(Lorg/iplant/pipeline/client/json/IPCType;)(rec);
 			e.dataTransfer.setDragImage(dragIcon, -10, -10);
-			e.dataTransfer.effectAllowed = 'all'; // only dropEffect='copy' will be dropable
+			e.dataTransfer.effectAllowed = 'copy'; // only dropEffect='copy' will be dropable
 			@org.iplant.pipeline.client.dnd.DragCreator::draggedRecord = rec;
 			listener.@org.iplant.pipeline.client.dnd.DragListener::dragStart(Lorg/iplant/pipeline/client/json/IPCType;)(rec);
 			if (element.getAttribute("data-downloadurl") != null) {
 				e.dataTransfer.setData("DownloadURL", element.getAttribute("data-downloadurl"));
 			} else {
-				e.dataTransfer.setData('text/plain', rec.@org.iplant.pipeline.client.json.IPCType::getId()()); // required otherwise doesn't work
+				e.dataTransfer.setData('Text',rec.@org.iplant.pipeline.client.json.IPCType::getId()()); // required otherwise doesn't work
 			}
 		}
 
@@ -69,22 +68,20 @@ public class DragCreator {
 			listener.@org.iplant.pipeline.client.dnd.DragListener::dragLeave(Lorg/iplant/pipeline/client/json/IPCType;)(rec);
 		}
 		function handleDrop(e) {
-			if (e.stopPropagation)
-				e.stopPropagation(); // stops the browser from redirecting...why???
-
-			var data = e.dataTransfer.getData('text/plain');
-			if(isNaN(data)){
-				//item is an json app from iplant
-				var obj = eval("("+data+")");
-				var app =@org.iplant.pipeline.client.dnd.DragCreator::createApp(Lcom/google/gwt/core/client/JavaScriptObject;)(obj);
-				@org.iplant.pipeline.client.dnd.DragCreator::draggedRecord =app; 
-			}
 			// this / e.target is current target element.
-			listener.@org.iplant.pipeline.client.dnd.DragListener::drop(Lorg/iplant/pipeline/client/json/IPCType;)(rec);
-
-			// See the section on the DataTransfer object.
-
-			return false;
+			if (e.stopPropagation) {
+				e.stopPropagation(); // stops the browser from redirecting.
+			}
+			if (e.preventDefault)
+				e.preventDefault();
+			var data = e.dataTransfer.getData('Text');
+			if (isNaN(data)) {
+				//				//item is an json app from iplant
+				var obj = eval("(" + data + ")");
+				var app = @org.iplant.pipeline.client.dnd.DragCreator::createApp(Lcom/google/gwt/core/client/JavaScriptObject;)(obj);
+				@org.iplant.pipeline.client.dnd.DragCreator::draggedRecord = app;
+			}
+			listener.@org.iplant.pipeline.client.dnd.DropListener::drop(Lorg/iplant/pipeline/client/json/IPCType;)(rec);
 		}
 
 		function handleDragEnd(e) {
@@ -102,29 +99,18 @@ public class DragCreator {
 	public static native void addDrop(Element element, IPCType rec, DropListener listener) /*-{
 
 		function handleDragOver(e) {
-			if(e.dataTransfer.getData('text/plain')!=''){
-				alert(e.dataTransfer.getData('text/plain'));
-				return;
-			}
-			
-			
+			if (e.preventDefault)
+				e.preventDefault(); // allows us to drop
+			e.dataTransfer.dropEffect = 'copy';
 			listener.@org.iplant.pipeline.client.dnd.DropListener::dragOver(Lorg/iplant/pipeline/client/json/IPCType;)(rec);
-
-			if (e.preventDefault) {
-				e.preventDefault(); // Necessary. Allows us to drop.
-			}
-
-			//e.dataTransfer.dropEffect = 'move'; // See the section on the DataTransfer object.
-			//this.style.border="1px dashed #84B4EA";
-			return false;
+			//			return false;
 		}
 
 		function handleDragEnter(e) {
-			// this / e.target is the current hover target.
-			if(e.dataTransfer.getData('text/plain')!==''){
-				alert(e.dataTransfer.getData('text/plain'));
-				return;
-			}
+			if (e.preventDefault)
+				e.preventDefault(); // allows us to drop
+			e.dataTransfer.dropEffect = 'copy';
+			//			return false;
 			listener.@org.iplant.pipeline.client.dnd.DropListener::dragEnter(Lorg/iplant/pipeline/client/json/IPCType;)(rec);
 		}
 
@@ -133,36 +119,41 @@ public class DragCreator {
 		}
 		function handleDrop(e) {
 			// this / e.target is current target element.
-			var data = e.dataTransfer.getData('text/plain');
-			if(isNaN(data)){
-				//item is an json app from iplant
-				var obj = eval("("+data+")");
-				var app =@org.iplant.pipeline.client.dnd.DragCreator::createApp(Lcom/google/gwt/core/client/JavaScriptObject;)(obj);
-				@org.iplant.pipeline.client.dnd.DragCreator::draggedRecord =app; 
-			}
-
-			listener.@org.iplant.pipeline.client.dnd.DropListener::drop(Lorg/iplant/pipeline/client/json/IPCType;)(rec);
-
 			if (e.stopPropagation) {
 				e.stopPropagation(); // stops the browser from redirecting.
 			}
-	
-			// See the section on the DataTransfer object.
-
-			return false;
+			if (e.preventDefault)
+				e.preventDefault();
+			var data = e.dataTransfer.getData('Text');
+			if (isNaN(data)) {
+				//				//item is an json app from iplant
+				var obj = eval("(" + data + ")");
+				var app = @org.iplant.pipeline.client.dnd.DragCreator::createApp(Lcom/google/gwt/core/client/JavaScriptObject;)(obj);
+				@org.iplant.pipeline.client.dnd.DragCreator::draggedRecord = app;
+			}
+			listener.@org.iplant.pipeline.client.dnd.DropListener::drop(Lorg/iplant/pipeline/client/json/IPCType;)(rec);
 		}
 
-		element.addEventListener('dragenter', handleDragEnter, false);
-		element.addEventListener('dragover', handleDragOver, false);
-		element.addEventListener('dragleave', handleDragLeave, false);
-		element.addEventListener('drop', handleDrop, false);
+		function addEvent(el, type, fn) {
+			if (el && el.nodeName || el === window) {
+				el.addEventListener(type, fn, false);
+			} else if (el && el.length) {
+				for ( var i = 0; i < el.length; i++) {
+					addEvent(el[i], type, fn);
+				}
+			}
+		}
+		addEvent(element, 'dragenter', handleDragEnter);
+		addEvent(element, 'dragover', handleDragOver);
+		addEvent(element, 'dragleave', handleDragLeave);
+		addEvent(element, 'drop', handleDrop);
 	}-*/;
 
 	public static IPCType getDragSource() {
 		return draggedRecord;
 	}
 
-	private static App createApp(String name,String description,String id){
+	private static App createApp(String name, String description, String id) {
 		App app = new App();
 		app.setName(name);
 		app.setDescription(description);
@@ -170,50 +161,52 @@ public class DragCreator {
 		app.setID(id);
 		return app;
 	}
-	private static App createApp(com.google.gwt.core.client.JavaScriptObject json){
+
+	private static App createApp(com.google.gwt.core.client.JavaScriptObject json) {
 		return createApp(new JSONObject(json));
 	}
-	public static App createApp(JSONObject json){
+
+	public static App createApp(JSONObject json) {
 		App app = new App();
-		app.setName(((JSONString)json.get("name")).stringValue());
-		app.setDescription(((JSONString)json.get("description")).stringValue());
+		app.setName(((JSONString) json.get("name")).stringValue());
+		app.setDescription(((JSONString) json.get("description")).stringValue());
 		app.setId(1);
-		app.setID(((JSONString)json.get("id")).stringValue());
+		app.setID(((JSONString) json.get("id")).stringValue());
 		JSONArray inputs = (JSONArray) json.get("inputs");
 		app.setInputJson(inputs);
-		for(int i=0;i<inputs.size();i++){
+		for (int i = 0; i < inputs.size(); i++) {
 			Input input = new Input();
 			JSONObject obj = (JSONObject) inputs.get(i);
 			JSONObject dataObj = (JSONObject) obj.get("data_object");
-			if(dataObj!=null){
-				input.setName(((JSONString)dataObj.get("name")).stringValue());
-				input.setDescription(((JSONString)dataObj.get("description")).stringValue());
+			if (dataObj != null) {
+				input.setName(((JSONString) dataObj.get("name")).stringValue());
+				input.setDescription(((JSONString) dataObj.get("description")).stringValue());
 				input.setId(1);
-				input.setRequired(((JSONBoolean)dataObj.get("required")).booleanValue());
-				input.setType("File:"+((JSONString)dataObj.get("format")).stringValue());
-				input.setID(((JSONString)dataObj.get("id")).stringValue());
+				input.setRequired(((JSONBoolean) dataObj.get("required")).booleanValue());
+				input.setType("File:" + ((JSONString) dataObj.get("format")).stringValue());
+				input.setID(((JSONString) dataObj.get("id")).stringValue());
 				app.addInput(input);
 			}
 		}
 		JSONArray outputs = (JSONArray) json.get("outputs");
 		app.setOutputJson(outputs);
-		for(int i=0;i<outputs.size();i++){
+		for (int i = 0; i < outputs.size(); i++) {
 			Output output = new Output();
 			JSONObject obj = (JSONObject) outputs.get(i);
 			JSONObject dataObj = (JSONObject) obj.get("data_object");
-			if(dataObj!=null){
-				output.setName(((JSONString)dataObj.get("name")).stringValue());
-				output.setDescription(((JSONString)dataObj.get("description")).stringValue());
+			if (dataObj != null) {
+				output.setName(((JSONString) dataObj.get("name")).stringValue());
+				output.setDescription(((JSONString) dataObj.get("description")).stringValue());
 				output.setId(1);
-				output.setType(((JSONString)dataObj.get("format")).stringValue());
-				output.setID(((JSONString)dataObj.get("id")).stringValue());
+				output.setType(((JSONString) dataObj.get("format")).stringValue());
+				output.setID(((JSONString) dataObj.get("id")).stringValue());
 				app.addOutput(output);
 			}
 		}
-		
+
 		return app;
 	}
-	
+
 	public static Element getImageElement(String src) {
 		Image img = new Image(src);
 		img.setWidth("20px");
