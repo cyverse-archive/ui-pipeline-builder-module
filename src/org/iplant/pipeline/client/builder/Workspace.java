@@ -165,6 +165,7 @@ public class Workspace extends FlowPanel implements DropListener, BlockChangeLis
 		for (int i = 0; i < wrappers.size(); i++) {
 			wrappers.get(i).setPosition(i);
 		}
+		revalidate();
 	}
 
 	public void blockRemoved(PipeComponent wrapper) {
@@ -172,6 +173,16 @@ public class Workspace extends FlowPanel implements DropListener, BlockChangeLis
 		wrappers.remove(wrapper.getPosition());
 		for (int i = 0; i < wrappers.size(); i++) {
 			wrappers.get(i).setPosition(i);
+		}
+		revalidate();
+	}
+	
+	public void revalidate(){
+		for(int i=0;i<getWidgetCount();i++){
+			Widget wid = getWidget(i);
+			if(wid instanceof Block){
+				((Block)wid).validate();
+			}
 		}
 	}
 

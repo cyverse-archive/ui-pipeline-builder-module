@@ -33,6 +33,8 @@ public class Input extends IPCType implements Comparable<Input> {
 	private String type;
 	private String ID;
 	private Output mapped;
+	private PipeComponent parent;
+
 
 	public Input(int id, String description, String name, String value, String flag, boolean required, int order, String displayType, String type) {
 		this.defaultValue = value;
@@ -160,6 +162,11 @@ public class Input extends IPCType implements Comparable<Input> {
 	public void setMapped(Output mapped) {
 		this.mapped = mapped;
 	}
-	
+	public void setParent(PipeComponent parent){
+		this.parent=parent;
+	}
+	public PipeComponent getParent(){
+		return parent;
+	}
 
 }

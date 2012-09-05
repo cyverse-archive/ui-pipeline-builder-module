@@ -73,4 +73,6 @@ public class PipeApp extends PipeComponent {
 	public Vector<Output> getOutputs() {
 		return wrapper.getOutputs();
 	}
+
+
 }
