@@ -75,7 +75,7 @@ public class DragCreator {
 			if (e.preventDefault)
 				e.preventDefault();
 			var data = e.dataTransfer.getData('Text');
-			if (isNaN(data)) {
+			if (data&&isNaN(data)) {
 				//				//item is an json app from iplant
 				var obj = eval("(" + data + ")");
 				var app = @org.iplant.pipeline.client.dnd.DragCreator::createApp(Lcom/google/gwt/core/client/JavaScriptObject;)(obj);
@@ -111,7 +111,7 @@ public class DragCreator {
 				e.preventDefault(); // allows us to drop
 			e.dataTransfer.dropEffect = 'copy';
 			//			return false;
-			listener.@org.iplant.pipeline.client.dnd.DropListener::dragEnter(Lorg/iplant/pipeline/client/json/IPCType;)(rec);
+		 	listener.@org.iplant.pipeline.client.dnd.DropListener::dragEnter(Lorg/iplant/pipeline/client/json/IPCType;)(rec);
 		}
 
 		function handleDragLeave(e) {

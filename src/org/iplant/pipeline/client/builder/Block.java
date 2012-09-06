@@ -181,9 +181,9 @@ public class Block extends Composite implements DragListener {
 	}
 
 	public void drop(IPCType record) {
+		removeStyleName("hoverO");
 		getElement().getStyle().setOpacity(1);
 		IPCType rec = DragCreator.getDragSource();
-
 		if (rec instanceof PipeComponent) {
 			// assume that the source is being moved
 			PipeComponent src = (PipeComponent) rec;
@@ -198,7 +198,7 @@ public class Block extends Composite implements DragListener {
 			wrap.setApp(result);
 			listener.blockAdded(wrap, app.getPosition());
 		}
-		removeStyleName("hoverO");
+		
 
 	}
 
@@ -220,7 +220,7 @@ public class Block extends Composite implements DragListener {
 		removeStyleName("hoverO");
 		for(int i=0;i<inputPanel.getWidgetCount();i++){
 			InputBlock inputBlock  = (InputBlock) inputPanel.getWidget(i);
-			if(inputBlock.getInput().getParent().getPosition()<inputBlock.getInput().getMapped().getParent().getPosition()){
+			if(inputBlock.getInput().getMapped()!=null&&inputBlock.getInput().getParent().getPosition()<inputBlock.getInput().getMapped().getParent().getPosition()){
 				inputBlock.inValidate();
 			}
 		}

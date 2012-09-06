@@ -63,6 +63,10 @@ public class PipelineCreator extends Composite {
 		main.insert(workspace, 0);
 	}
 	
+	public void appendApp(JSONObject app){
+		workspace.appendApp(DragCreator.createApp(app));
+	}
+	
 	private Pipeline getPipelineFromJson(JSONObject json){
 		Pipeline ret = new Pipeline();
 		JSONArray apps = (JSONArray) json.get("apps");

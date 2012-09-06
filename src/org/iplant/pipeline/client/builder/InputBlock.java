@@ -39,9 +39,10 @@ public class InputBlock extends Composite implements MouseOverHandler, MouseOutH
 	FlowPanel top = new FlowPanel();
 	HTML name = new HTML();
 	PipeComponent parent;
+
 	public InputBlock(Input input, PipeComponent app) {
 		this.input = input;
-		parent=app;
+		parent = app;
 		FlowPanel pane = new FlowPanel();
 		input.setParent(parent);
 		initWidget(pane);
@@ -75,18 +76,31 @@ public class InputBlock extends Composite implements MouseOverHandler, MouseOutH
 		toolTip.show();
 	}
 
-	public void dragEnter(IPCType record2) {
+	public boolean dragEnter(IPCType record2) {
 		IPCType record = DragCreator.getDragSource();
 		if (record instanceof Output) {
-			top.getElement().getStyle().setBackgroundColor("#A5CAF4");
+			Output temp = (Output) record;
+			if (temp.getParent().getPosition() < input.getParent().getPosition())
+				top.getElement().getStyle().setBackgroundColor("#A5CAF4");
+			else {
+				return false;
+			}
 		}
+		return true;
 	}
 
-	public void dragOver(IPCType record2) {
+	public boolean dragOver(IPCType record2) {
 		IPCType record = DragCreator.getDragSource();
 		if (record instanceof Output) {
-			top.getElement().getStyle().setBackgroundColor("#A5CAF4");
+			Output temp = (Output) record;
+			if (temp.getParent().getPosition() < input.getParent().getPosition())
+				top.getElement().getStyle().setBackgroundColor("#A5CAF4");
+			else {
+				return false;
+
+			}
 		}
+		return true;
 	}
 
 	public void dragLeave(IPCType record2) {
@@ -94,10 +108,10 @@ public class InputBlock extends Composite implements MouseOverHandler, MouseOutH
 	}
 
 	public void setInputValue(Output output) {
-		if(output.getParent().getPosition()>input.getParent().getPosition()){
+		if (output.getParent().getPosition() >= input.getParent().getPosition()) {
 			return;
 		}
-		
+
 		top.clear();
 		input.setMapped(output);
 		name.getElement().getStyle().setBackgroundColor("#299C47");
@@ -122,10 +136,12 @@ public class InputBlock extends Composite implements MouseOverHandler, MouseOutH
 	public Element getDragImage(IPCType record) {
 		return null;
 	}
-	public Input getInput(){
+
+	public Input getInput() {
 		return input;
 	}
-	public void inValidate(){
+
+	public void inValidate() {
 		top.clear();
 		input.setMapped(null);
 		name.getElement().getStyle().setBackgroundColor("");

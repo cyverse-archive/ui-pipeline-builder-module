@@ -21,8 +21,8 @@ import org.iplant.pipeline.client.json.IPCType;
 
 public interface DropListener {
 	
-	public void dragEnter(IPCType record);
-	public void dragOver(IPCType record);
+	public boolean dragEnter(IPCType record);
+	public boolean dragOver(IPCType record);
 	public void dragLeave(IPCType record);
 	public void drop(IPCType record);
 	

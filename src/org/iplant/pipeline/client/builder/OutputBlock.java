@@ -52,7 +52,7 @@ public class OutputBlock extends Composite implements DragListener, MouseOverHan
 	}
 
 	public void dragStart(IPCType record) {
-		getElement().getStyle().setOpacity(.5);
+		getElement().getStyle().setOpacity(.9);
 	}
 	public Output getOutput(){
 		return output;
