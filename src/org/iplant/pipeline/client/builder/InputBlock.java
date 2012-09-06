@@ -20,6 +20,7 @@ import org.iplant.pipeline.client.dnd.DropListener;
 import org.iplant.pipeline.client.json.IPCType;
 import org.iplant.pipeline.client.json.Input;
 import org.iplant.pipeline.client.json.Output;
+import org.iplant.pipeline.client.json.PipeComponent;
 
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.MouseOutEvent;
@@ -37,12 +38,14 @@ public class InputBlock extends Composite implements MouseOverHandler, MouseOutH
 	private PopupPanel toolTip;
 	FlowPanel top = new FlowPanel();
 	HTML name = new HTML();
+	PipeComponent parent;
 
-	public InputBlock(Input input) {
+	public InputBlock(Input input, PipeComponent app) {
 		this.input = input;
+		parent = app;
 		FlowPanel pane = new FlowPanel();
+		input.setParent(parent);
 		initWidget(pane);
-
 		FlowPanel bottom = new FlowPanel();
 		setStyleName("input-block");
 		top.setStyleName("top");
@@ -73,18 +76,31 @@ public class InputBlock extends Composite implements MouseOverHandler, MouseOutH
 		toolTip.show();
 	}
 
-	public void dragEnter(IPCType record2) {
+	public boolean dragEnter(IPCType record2) {
 		IPCType record = DragCreator.getDragSource();
 		if (record instanceof Output) {
-			top.getElement().getStyle().setBackgroundColor("#A5CAF4");
+			Output temp = (Output) record;
+			if (temp.getParent().getPosition() < input.getParent().getPosition())
+				top.getElement().getStyle().setBackgroundColor("#A5CAF4");
+			else {
+				return false;
+			}
 		}
+		return true;
 	}
 
-	public void dragOver(IPCType record2) {
+	public boolean dragOver(IPCType record2) {
 		IPCType record = DragCreator.getDragSource();
 		if (record instanceof Output) {
-			top.getElement().getStyle().setBackgroundColor("#A5CAF4");
+			Output temp = (Output) record;
+			if (temp.getParent().getPosition() < input.getParent().getPosition())
+				top.getElement().getStyle().setBackgroundColor("#A5CAF4");
+			else {
+				return false;
+
+			}
 		}
+		return true;
 	}
 
 	public void dragLeave(IPCType record2) {
@@ -92,6 +108,10 @@ public class InputBlock extends Composite implements MouseOverHandler, MouseOutH
 	}
 
 	public void setInputValue(Output output) {
+		if (output.getParent().getPosition() >= input.getParent().getPosition()) {
+			return;
+		}
+
 		top.clear();
 		input.setMapped(output);
 		name.getElement().getStyle().setBackgroundColor("#299C47");
@@ -99,7 +119,6 @@ public class InputBlock extends Composite implements MouseOverHandler, MouseOutH
 		name.setHTML(output.getName());
 		name.setStyleName("output-block");
 		top.add(name);
-		// input.setValue(output.getValue());
 	}
 
 	public void drop(IPCType record2) {
@@ -107,50 +126,8 @@ public class InputBlock extends Composite implements MouseOverHandler, MouseOutH
 		if (record instanceof Output) {
 			final Output output = (Output) record;
 			top.getElement().getStyle().setBackgroundColor("");
-
-			// if(output.getName().startsWith("Custom")){
-			// SC.ask("Value?", new ValueListener<String>() {
-			// @Override
-			// public void returned(String ret) {
-			// if(!ret.equals("")){
-			// top.clear();
-			// name.getElement().getStyle().setBackgroundColor("#299C47");
-			// HTML name = new HTML();
-			// name.setHTML(output.getName());
-			// name.setStyleName("output-block");
-			// top.add(name);
-			// input.setValue("${" + ret + "}");
-			// }
-			// }
-			// });
-			// }else if (input.getType().length() <= 5 ||
-			// input.getType().substring(5).startsWith(output.getType())) {
-			// top.clear();
-			// name.getElement().getStyle().setBackgroundColor("#299C47");
-			// HTML name = new HTML();
-			// name.setHTML(output.getName());
-			// name.setStyleName("output-block");
-			// top.add(name);
-			// input.setValue("$'" + output.getName() + "'");
-			// } else {
-			// SC.ask("Types don't match", "The inÖput type: " +
-			// input.getType().substring(5) + " doesn't match the output type: "
-			// + output.getType() + ", Would you like to ignore this?", new
-			// ValueListener<Boolean>() {
-			// public void returned(Boolean ret) {
-			// if (ret) {
-			// top.clear();
-			// name.getElement().getStyle().setBackgroundColor("#299C47");
-			// HTML name = new HTML();
-			// name.setHTML(output.getName());
-			// name.setStyleName("output-block");
-			// top.add(name);
-			// input.setValue( output.getID() );
 			setInputValue(output);
 		}
-		// }
-		// });
-		// }
 	}
 
 	public void dragEnd(IPCType record) {
@@ -158,6 +135,17 @@ public class InputBlock extends Composite implements MouseOverHandler, MouseOutH
 
 	public Element getDragImage(IPCType record) {
 		return null;
+	}
+
+	public Input getInput() {
+		return input;
+	}
+
+	public void inValidate() {
+		top.clear();
+		input.setMapped(null);
+		name.getElement().getStyle().setBackgroundColor("");
+
 	}
 
 }

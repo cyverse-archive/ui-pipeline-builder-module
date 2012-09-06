@@ -29,7 +29,6 @@ import org.iplant.pipeline.client.json.Pipeline;
 import org.iplant.pipeline.client.json.PipelineApp;
 import org.iplant.pipeline.client.json.UserApp;
 
-
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -47,18 +46,20 @@ public class Workspace extends FlowPanel implements DropListener, BlockChangeLis
 		DragCreator.addDrop(getElement(), null, this);
 	}
 
-	public void dragEnter(IPCType recod) {
+	public boolean dragEnter(IPCType recod) {
 		IPCType record = DragCreator.getDragSource();
 		if (record instanceof UserApp) {
 			// addStyleName("hover");
 		}
+		return true;
 	}
 
-	public void dragOver(IPCType recor) {
+	public boolean dragOver(IPCType recor) {
 		IPCType record = DragCreator.getDragSource();
 		if (record instanceof UserApp) {
 			// addStyleName("hover");
 		}
+		return true;
 	}
 
 	public void dragLeave(IPCType record) {
@@ -67,61 +68,10 @@ public class Workspace extends FlowPanel implements DropListener, BlockChangeLis
 
 	public void drop(IPCType reco) {
 		IPCType record = DragCreator.getDragSource();
-		
-			if(pipe.getName().equals("Switch")){
-				if(record instanceof PipelineApp){
-					PipelineApp droping = (PipelineApp)record;
-					if(droping.getName().equals("Case")){
-						SC.ask("What is the value of the case?", new ValueListener<String>() {
-							@Override
-							public void returned(String ret) {
-								if(ret!=null&& !ret.equals("")){
-									PipelineApp casePipe = new PipelineApp(0, -1, -1);
-									casePipe.setPipeline(new Pipeline("Case:"+ret, "", true, -1));
-									wrappers.add(casePipe);
-									add(new Block(casePipe, Workspace.this));
-									for (int i = 0; i < wrappers.size(); i++) {
-										wrappers.get(i).setPosition(i);
-									}
-								}
-							}
-						});
-					}
-				}
-				removeStyleName("hover");
-				return;
-			}
-		
-		
-		// if (record instanceof PipeComponent) {
-		// PipeComponent wrap = (PipeComponent) record;
-		// if (wrap.getPosition() == -1) {
-		// // this is new and being dragged on
-		// wrap.setPosition(wrappers.size());
-		// wrappers.add(wrap);
-		// add(FunctionBlock.getBlock(wrap, this));
-		// } else {
-		// // this is being moved handle it!
-		// Widget wid = getWidget(wrap.getPosition() + offset);
-		// remove(wrap.getPosition() + offset);
-		// add(wid);
-		// wrappers.remove(wrap.getPosition());
-		// wrappers.add(wrap);
-		// for (int i = 0; i < wrappers.size(); i++) {
-		// wrappers.get(i).setPosition(i);
-		// }
-		// }
-		// } else
 
 		if (record instanceof App) {
 			App app = (App) record;
-			PipeApp wrap = new PipeApp(-1, app.getId(), wrappers.size());
-			wrap.setApp(app);
-			wrappers.add(wrap);
-			add(new Block(wrap, Workspace.this));
-			for (int i = 0; i < wrappers.size(); i++) {
-				wrappers.get(i).setPosition(i);
-			}
+			appendApp(app);
 		} else if (record instanceof PipeComponent) {
 			// assume this is being moved and add to the bottom of the stack
 			PipeComponent wrap = (PipeComponent) record;
@@ -149,6 +99,16 @@ public class Workspace extends FlowPanel implements DropListener, BlockChangeLis
 		removeStyleName("hover");
 	}
 
+	public void appendApp(App app) {
+		PipeApp wrap = new PipeApp(-1, app.getId(), wrappers.size());
+		wrap.setApp(app);
+		wrappers.add(wrap);
+		add(new Block(wrap, Workspace.this));
+		for (int i = 0; i < wrappers.size(); i++) {
+			wrappers.get(i).setPosition(i);
+		}
+	}
+
 	public void blockMoved(PipeComponent wrapper, int before) {
 		if (wrapper.getPosition() == before)
 			return;
@@ -165,6 +125,7 @@ public class Workspace extends FlowPanel implements DropListener, BlockChangeLis
 		for (int i = 0; i < wrappers.size(); i++) {
 			wrappers.get(i).setPosition(i);
 		}
+		revalidate();
 	}
 
 	public void blockRemoved(PipeComponent wrapper) {
@@ -172,6 +133,16 @@ public class Workspace extends FlowPanel implements DropListener, BlockChangeLis
 		wrappers.remove(wrapper.getPosition());
 		for (int i = 0; i < wrappers.size(); i++) {
 			wrappers.get(i).setPosition(i);
+		}
+		revalidate();
+	}
+
+	public void revalidate() {
+		for (int i = 0; i < getWidgetCount(); i++) {
+			Widget wid = getWidget(i);
+			if (wid instanceof Block) {
+				((Block) wid).validate();
+			}
 		}
 	}
 

@@ -36,4 +36,5 @@ public abstract class PipeComponent extends IPCType{
 	public abstract Vector<Output> getOutputs();
 	public abstract Vector<Input> getInputs();
 	public abstract String getName();
+
 }

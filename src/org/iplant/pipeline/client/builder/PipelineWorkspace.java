@@ -15,12 +15,12 @@
  */
 package org.iplant.pipeline.client.builder;
 
-import java.util.Vector;
 
 import org.iplant.pipeline.client.SC;
 import org.iplant.pipeline.client.dnd.DragCreator;
 import org.iplant.pipeline.client.dnd.DropListener;
 import org.iplant.pipeline.client.images.Resources;
+import org.iplant.pipeline.client.json.App;
 import org.iplant.pipeline.client.json.IPCType;
 import org.iplant.pipeline.client.json.Input;
 import org.iplant.pipeline.client.json.Output;
@@ -97,25 +97,9 @@ public class PipelineWorkspace extends Composite {
 		casePipe.setPipeline(new Pipeline("Case", "Used in a switch statement to represent the steps when the switch value is equal to this case", true, -3));
 		table.setWidget(5, 3, new FunctionMiniBlock(casePipe));
 
-//		HorizontalPanel bar  = new HorizontalPanel();
-//		bar.setHeight("20px");
-//		bar.setStyleName("tab-bar");
-//		bar.add(new LabelButton("Pipeline inputs"));
-//		bar.setWidth("100%");
-//		table.setWidget(6, 0, bar);
-//		table.setWidget(7,0, userInputs);
-//		userInputs.setStyleName("pipeinput");
-//		table.getFlexCellFormatter().setColSpan(6, 0, 2);
-//		table.getFlexCellFormatter().setColSpan(7, 0, 2);
 
 		workspace.setStyleName("pipe-workspace");
 		workspace.setHeight("100%");
-//		for(Input input:pipeline.getInputs()){
-//			userInputs.add(new OutputBlock(new Output(input.getName(), input.getType(), input.getDescription(), input.getDefaultValue(), input.getId())));
-//		}
-//		userInputs.add(new OutputBlock(new Output("User Input", "", "This will force the user to provide this file", "", -1)));
-//		userInputs.add(new OutputBlock(new Output("Custom", "", "This will allow you to type in custom code to be used", "", -1)));
-//		userInputs.add(new OutputBlock(new Output("Working Folder", "Folder", "This will be the working folder that the user provides", "", -1)));
 
 		trashImg.setStyleName("trash");
 
@@ -125,16 +109,18 @@ public class PipelineWorkspace extends Composite {
 				DragCreator.getDragSource().setDragAction(DragCreator.DELETE);
 			}
 
-			public void dragOver(IPCType record) {
+			public boolean dragOver(IPCType record) {
 				trashImg.setUrl(Resources.INSTANCE.trashOpen().getSafeUri().asString());
+				return true;
 			}
 
 			public void dragLeave(IPCType record) {
 				trashImg.setUrl(Resources.INSTANCE.trashClose().getSafeUri().asString());
 			}
 
-			public void dragEnter(IPCType record) {
+			public boolean dragEnter(IPCType record) {
 				trashImg.setUrl(Resources.INSTANCE.trashOpen().getSafeUri().asString());
+				return true;
 			}
 
 		});	
@@ -157,11 +143,6 @@ public class PipelineWorkspace extends Composite {
 		loadNonBlocks();
 		workspace.loadPipeline(pipeline);
 		userInputs.clear();
-//		for(Input input:pipeline.getInputs()){
-//			userInputs.add(new OutputBlock(new Output(input.getName(), input.getType(), input.getDescription(), input.getDefaultValue(), input.getId())));
-//		}
-//		userInputs.add(new OutputBlock(new Output("User Input", "", "This will force the user to provide this file", "", -1)));
-//		userInputs.add(new OutputBlock(new Output("Working Folder", "Folder", "This will be the working folder that the user provides", "", -1)));
 		
 	}
 
@@ -184,29 +165,16 @@ public class PipelineWorkspace extends Composite {
 			return;
 		}
 
-//		appService.savePipeline(pipeline, new MyAsyncCallback<Pipeline>() {
-//			@Override
-//			public void success(Pipeline result) {
-//				loadPipeline(result);
-//			}
-//		});
 
-	}
-
-
-	public void saveInputs(Vector<Input> data) {
-//		pipeline.setInputs(data);
-//		userInputs.clear();
-//		for(Input input:pipeline.getInputs()){
-//			userInputs.add(new OutputBlock(new Output(input.getName(), input.getType(), input.getDescription(), input.getDefaultValue(), input.getId())));
-//		}
-//		userInputs.add(new OutputBlock(new Output("User Input", "", "This will force the user to provide this file", "", -1)));
-//		userInputs.add(new OutputBlock(new Output("Working Folder", "Folder", "This will be the working folder that the user provides", "", -1)));
-		
 	}
 
 
 	public Pipeline getPipeline() {
 		return pipeline;
+	}
+
+
+	public void appendApp(App app) {
+		workspace.appendApp(app);
 	}
 }

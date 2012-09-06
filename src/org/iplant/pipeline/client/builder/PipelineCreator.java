@@ -40,10 +40,6 @@ public class PipelineCreator extends Composite {
 	PipelineWorkspace workspace;
 	HorizontalPanel main = new HorizontalPanel();
 
-	// private int pipelineId = 0;
-	// private InputsTable inputs;
-	// private int inputsInt = -1;
-
 	public PipelineCreator() {
 		workspace = new PipelineWorkspace(new Pipeline("", "", false, 0));
 		workspace.setHeight("100%");
@@ -52,39 +48,8 @@ public class PipelineCreator extends Composite {
 		main.add(workspace);
 		main.setCellHeight(workspace, "100%");
 		main.setHeight("100%");
-		// inputs = new InputsTable(false);
-		// inputs.getScrollPane().setHeight("500px");
 		initWidget(main);
 	}
-
-	// public void setupInputs() {
-	// HorizontalPanel bar = new HorizontalPanel();
-	// inputs.setData(workspace.getPipeline().getInputs());
-	// bar.add(new ImgButton(Resources.INSTANCE.add(),
-	// "Add new Input").setClickHandler(new ClickHandler() {
-	// public void onClick(ClickEvent event) {
-	// Input newInput = new Input();
-	// newInput.setId(inputsInt--);
-	// newInput.setName("Untitled " + ((inputsInt * -1) - 1));
-	// addInput(newInput);
-	// }
-	//
-	// }));
-	// bar.add(new Seprator());
-	// SC.ask("Setup your inputs", inputs,bar,new ValueListener<Boolean>() {
-	// @Override
-	// public void returned(Boolean ret) {
-	// if(ret){
-	// //save the inputs back to the pipeline
-	// workspace.saveInputs(inputs.getData());
-	// }
-	// }
-	// });
-	// }
-
-	// private void addInput(Input input) {
-	// // inputs.addInput(input);
-	// }
 
 	/**
 	 * This will load an existing pipeline into the creator.
@@ -96,6 +61,10 @@ public class PipelineCreator extends Composite {
 		workspace.setHeight("100%");
 		workspace.setWidth("100%");
 		main.insert(workspace, 0);
+	}
+	
+	public void appendApp(JSONObject app){
+		workspace.appendApp(DragCreator.createApp(app));
 	}
 	
 	private Pipeline getPipelineFromJson(JSONObject json){

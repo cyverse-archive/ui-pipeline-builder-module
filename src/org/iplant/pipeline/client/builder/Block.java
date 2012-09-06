@@ -108,28 +108,13 @@ public class Block extends Composite implements DragListener {
 		Vector<Input> inputs = app.getInputs();
 		if (listener == null)
 			return;
-//		Vector<PipeComponent> apps = listener.getPreviousApps(app.getPosition());
 		for (Input input : inputs) {
 			if (input.getType().startsWith("File")) {
-				InputBlock block = new InputBlock(input);
+				InputBlock block = new InputBlock(input,app);
 				inputPanel.add(block);
 				if(input.getMapped()!=null){
 					block.setInputValue(input.getMapped());
 				}
-//				if (!input.getValue().equals("")) {
-//					block.setInputValue(new Output(input.getValue(), "", "", input.getValue(), -1));
-//					continue outer;
-//				}
-//				if (input.getType().equals("File"))
-//					continue outer;
-//				for (PipeComponent wrap : apps) {
-//					for (Output output : wrap.getOutputs()) {
-//						if (input.getType().length() <= 5 || input.getType().substring(5).startsWith(output.getType())) {
-//							block.setInputValue(output);
-//							continue outer;
-//						}
-//					}
-//				}
 			}
 		}
 		for (Output output : app.getOutputs()) {
@@ -196,9 +181,9 @@ public class Block extends Composite implements DragListener {
 	}
 
 	public void drop(IPCType record) {
+		removeStyleName("hoverO");
 		getElement().getStyle().setOpacity(1);
 		IPCType rec = DragCreator.getDragSource();
-
 		if (rec instanceof PipeComponent) {
 			// assume that the source is being moved
 			PipeComponent src = (PipeComponent) rec;
@@ -213,7 +198,7 @@ public class Block extends Composite implements DragListener {
 			wrap.setApp(result);
 			listener.blockAdded(wrap, app.getPosition());
 		}
-		removeStyleName("hoverO");
+		
 
 	}
 
@@ -229,6 +214,16 @@ public class Block extends Composite implements DragListener {
 
 	public Element getDragImage(IPCType record) {
 		return startBlock.getElement();
+	}
+
+	public void validate() {
+		removeStyleName("hoverO");
+		for(int i=0;i<inputPanel.getWidgetCount();i++){
+			InputBlock inputBlock  = (InputBlock) inputPanel.getWidget(i);
+			if(inputBlock.getInput().getMapped()!=null&&inputBlock.getInput().getParent().getPosition()<inputBlock.getInput().getMapped().getParent().getPosition()){
+				inputBlock.inValidate();
+			}
+		}
 	}
 
 }
