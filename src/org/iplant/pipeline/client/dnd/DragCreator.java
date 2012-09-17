@@ -71,6 +71,7 @@ public class DragCreator {
 		}
 
 		function handleDragEnter(e) {
+			if(e.preventDefault)
 			event.preventDefault();
 			// this / e.target is the current hover target.
 			listener.@org.iplant.pipeline.client.dnd.DragListener::dragEnter(Lorg/iplant/pipeline/client/json/IPCType;)(rec);
