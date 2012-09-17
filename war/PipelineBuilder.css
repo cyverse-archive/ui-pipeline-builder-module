@@ -69,37 +69,7 @@ body,html{
 /*
 *	Button and form stuff
 */
-.eta-textarea,.eta-input,.eta-selectbox {
-	outline: none;
-	border: 1px solid #555;
-	font-size: 13px;
-	height: 25px;
-	line-height: 1.2em;
-	background: #fff;
-	background: -webkit-gradient(linear, left top, left bottom, from(#fff),
-		to(#ccc) );
-	background: -moz-linear-gradient(top, #fff, #ccc);
-	appearance: none;
-	-webkit-box-shadow: 1px 1px 1px #fff;
-	-moz-box-shadow: 1px 1px 1px #fff;
-	border-radius: 0.5em;
-	-moz-border-radius: 0.5em;
-}
 
-.eta-textarea2,.eta-input2,.eta-selectbox2,input {
-	outline: none;
-	border: 1px solid #555;
-	font-size: 13px;
-	height: 20px;
-	line-height: 1.2em;
-	background: #fff;
-	appearance: none;
-	-webkit-box-shadow: 1px 1px 1px #fff;
-	-moz-box-shadow: 1px 1px 1px #fff;
-	border-radius: 0.5em;
-	-moz-border-radius: 0.5em;
-	width: 90%;
-}
 
 .eta-form {
 	text-align: right;
@@ -434,6 +404,7 @@ body,html{
 	position: absolute;
 	bottom: 10px;
 	left: 10px;
+	height:60px;
 }
 
 .block .center {
@@ -571,6 +542,8 @@ body,html{
 	-moz-border-radius: 10px;
 	color: white;
 	text-align: center;
+	cursor: pointer;
+	display:table;
 }
 
 .block:hover {

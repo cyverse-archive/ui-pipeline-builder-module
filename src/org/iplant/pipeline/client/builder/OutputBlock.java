@@ -62,7 +62,8 @@ public class OutputBlock extends Composite implements DragListener, MouseOverHan
 	public void dragEnter(IPCType record) {
 	}
 
-	public void dragOver(IPCType record) {
+	public boolean dragOver(IPCType record) {
+		return false;
 	}
 
 	public void dragLeave(IPCType record) {

@@ -167,13 +167,15 @@ public class Block extends Composite implements DragListener {
 	public void dragEnter(IPCType record) {
 	}
 
-	public void dragOver(IPCType record) {
+	public boolean dragOver(IPCType record) {
 		IPCType rec = DragCreator.getDragSource();
 		if (rec instanceof Output) {
 			inputPanel.setVisible(true);
 		} else if ((rec instanceof PipeComponent || rec instanceof UserApp) && !rec.equals(app)) {
 			addStyleName("hoverO");
+			return true;
 		}
+		return false;
 	}
 
 	public void dragLeave(IPCType record) {

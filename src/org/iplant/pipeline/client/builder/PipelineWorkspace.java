@@ -22,18 +22,19 @@ import org.iplant.pipeline.client.dnd.DropListener;
 import org.iplant.pipeline.client.images.Resources;
 import org.iplant.pipeline.client.json.App;
 import org.iplant.pipeline.client.json.IPCType;
-import org.iplant.pipeline.client.json.Input;
-import org.iplant.pipeline.client.json.Output;
 import org.iplant.pipeline.client.json.Pipeline;
-import org.iplant.pipeline.client.json.PipelineApp;
 import org.iplant.pipeline.client.ui.SimpleLabel;
 
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -74,30 +75,6 @@ public class PipelineWorkspace extends Composite {
 		infoPane.setWidth("100%");
 		table.setWidth("100%");
 		infoPane.add(table);
-//		pane.add(infoPane);
-//		pane.setCellWidth(infoPane, "300px");
-		PipelineApp temp=new PipelineApp(0, -1, -1);
-		temp.setPipeline(new Pipeline("Foreach", "A foreach tool that will run the apps for every item in the input list", true, -2));
-		temp.getInputs().add(new Input(-1, "List of items", "Items", "", "", true, 0, "Default", "List"));
-		temp.getOutputs().add(new Output("Foreach Item", "", "The item in the forloop", "${splitList($'Items')}", -1));
-		table.setWidget(5, 0, new FunctionMiniBlock(temp));
-		
-		PipelineApp temp2=new PipelineApp(0, -1, -1);
-		temp2.setPipeline(new Pipeline("If", "A  tool that will run the apps based on the conditional", true, -3));
-		temp2.getInputs().add(new Input(-1, "Condition", "Condition", "", "", true, 0, "Default", "List:File"));
-		
-		table.setWidget(5, 1, new FunctionMiniBlock(temp2));
-		
-		PipelineApp temp3=new PipelineApp(0, -1, -1);
-		temp3.setPipeline(new Pipeline("Switch", "A  tool that will run the apps based a selection", true, -3));
-		temp3.getInputs().add(new Input(-1, "switch", "switch", "", "", true, 0, "Default", "String"));
-		table.setWidget(5, 2, new FunctionMiniBlock(temp3));
-		
-		PipelineApp casePipe = new PipelineApp(0, -1, -1);
-		casePipe.setPipeline(new Pipeline("Case", "Used in a switch statement to represent the steps when the switch value is equal to this case", true, -3));
-		table.setWidget(5, 3, new FunctionMiniBlock(casePipe));
-
-
 		workspace.setStyleName("pipe-workspace");
 		workspace.setHeight("100%");
 
@@ -147,11 +124,63 @@ public class PipelineWorkspace extends Composite {
 	}
 
 	private void loadNonBlocks() {
-		HTML center = new HTML();
-		center.setHeight("30px");
-		center.setWidth("100px");
+		final HTML center = new HTML();
 		center.setStyleName("start-block");
-		center.setHTML("<div style='padding-top:5px;background:none;'>Start<div>");
+		if(pipeline.getName().equals("")){
+		center.setHTML("<div style='padding-top:5px;background:none;'>Click here to edit name and description<div>");
+		}else{
+			String tempDesc = pipeline.getDescription();
+			if(tempDesc.length()>30){
+				tempDesc= tempDesc.substring(0, 27)+"...";
+			}
+			center.setHTML("<div style='padding-top:5px;background:none;'>"+pipeline.getName()+"<br>"+tempDesc+"<div>");
+		}
+		center.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				final PopupPanel descPanel = new PopupPanel();
+				descPanel.setStyleName("pipeline-form");
+				FlowPanel form = new FlowPanel();
+				HTML nameL = new HTML("Name:");
+				nameL.setStyleName("pipeline-label");
+				final TextBox name = new TextBox();
+				name.setText(pipeline.getName());
+				form.add(nameL);
+				form.add(name);
+				
+				HTML descL = new HTML("Description:");
+				descL.setStyleName("pipeline-label");
+				final TextArea desc = new TextArea();
+				desc.setText(pipeline.getDescription());
+				form.add(descL);
+				form.add(desc);
+				Button save = new Button("Save");
+				Button cancel = new Button("Cancel");
+				cancel.addClickHandler(new ClickHandler() {
+					@Override
+					public void onClick(ClickEvent event) {
+						descPanel.hide();
+					}
+				});
+				save.addClickHandler(new ClickHandler() {
+					@Override
+					public void onClick(ClickEvent event) {
+						pipeline.setName(name.getText());
+						pipeline.setDescription(desc.getText());
+						descPanel.hide();
+						String tempDesc = pipeline.getDescription();
+						if(tempDesc.length()>30){
+							tempDesc= tempDesc.substring(0, 27)+"...";
+						}
+						center.setHTML("<div style='padding-top:5px;background:none;'>"+pipeline.getName()+"<br>"+tempDesc+"<div>");
+					}
+				});
+				form.add(save);
+				form.add(cancel);
+				descPanel.add(form);
+				descPanel.showRelativeTo(center);
+			}
+		});
 		workspace.addNonBlock(center);
 	}
 
