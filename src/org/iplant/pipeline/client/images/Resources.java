@@ -25,23 +25,13 @@ public interface Resources extends ClientBundle {
 	@Source("down.png")
 	DataResource down();
 	
-	@Source("add.png")
-	DataResource add();
-	
 	@Source("trash_can_open.png")
 	DataResource trashOpen();
 	
 	@Source("trash_can_close.png")
 	DataResource trashClose();
 	
-	@Source("wrench.png")
-	DataResource wrench();
-	
 	@Source("accept.png")
 	DataResource accept();
 	
-	@Source("cancel.png")
-	DataResource cancel();
-	
-
 }

@@ -680,3 +680,21 @@ body,html{
 	border: 1px dashed #84B4EA;
 }
 
+.start-block .simple-label{
+	color:white;
+	padding:0px;	
+	cursor:pointer;
+}
+.start-block input{
+	outline: none;
+	border: none;
+	padding: 1px;
+	color: gray;
+	border-radius: 4px;	
+	-moz-border-radius: 4px;	
+}
+
+.block .center .gwt-Label{
+	padding-top:5px;	
+}
+}

@@ -19,7 +19,6 @@ import java.util.Vector;
 
 import org.iplant.pipeline.client.dnd.DragCreator;
 import org.iplant.pipeline.client.dnd.DragListener;
-import org.iplant.pipeline.client.images.Resources;
 import org.iplant.pipeline.client.json.App;
 import org.iplant.pipeline.client.json.IPCType;
 import org.iplant.pipeline.client.json.Input;
@@ -30,6 +29,7 @@ import org.iplant.pipeline.client.json.PipelineApp;
 import org.iplant.pipeline.client.json.UserApp;
 import org.iplant.pipeline.client.ui.Button;
 import org.iplant.pipeline.client.ui.Seprator;
+import org.iplant.pipeline.client.ui.SimpleLabel;
 
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -72,20 +72,26 @@ public class Block extends Composite implements DragListener {
 
 		startBlock.add(expandInputs);
 		startBlock.add(inputPanel);
-		HTML img = new HTML("<img src='" + Resources.INSTANCE.wrench().getSafeUri().asString() + "'/>");
-		startBlock.add(img);
-		img.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-				edit();
-			}
-		});
-		img.setStyleName("center");
-		img.setHeight("30px");
-		HTML center = new HTML();
+		// HTML img = new HTML("<img src='" +
+		// Resources.INSTANCE.wrench().getSafeUri().asString() + "'/>");
+		// startBlock.add(img);
+		// img.addClickHandler(new ClickHandler() {
+		// public void onClick(ClickEvent event) {
+		// edit();
+		// }
+		// });
+		// img.setStyleName("center");
+		// img.setHeight("30px");
+		String name = app.getName();
+		if (name.length() > 23) {
+			name = name.substring(0, 20) + "...";
+		}
+		SimpleLabel center = new SimpleLabel(name);
+		if (app.getName().length() > 23)
+			center.setToolTip(app.getName());
 		center.setHeight("30px");
 		startBlock.add(center);
 		center.setStyleName("center");
-		center.setHTML("<div style='padding-top:5px;background:none;'>" + app.getName() + "<div>");
 
 		startBlock.add(outputPanel);
 
@@ -110,22 +116,22 @@ public class Block extends Composite implements DragListener {
 			return;
 		for (Input input : inputs) {
 			if (input.getType().startsWith("File")) {
-				InputBlock block = new InputBlock(input,app);
+				InputBlock block = new InputBlock(input, app);
 				inputPanel.add(block);
-				if(input.getMapped()!=null){
+				if (input.getMapped() != null) {
 					block.setInputValue(input.getMapped());
 				}
 			}
 		}
 		for (Output output : app.getOutputs()) {
-			outputPanel.add(new OutputBlock(output,app));
+			outputPanel.add(new OutputBlock(output, app));
 		}
 
 	}
 
 	public void edit() {
 		if (app instanceof PipeApp) {
-//			final PipeApp app = (PipeApp) this.app;
+			// final PipeApp app = (PipeApp) this.app;
 			HorizontalPanel bar = new HorizontalPanel();
 			bar.add(new Seprator());
 			bar.add(new Button("Job Options").setClickHandler(new ClickHandler() {
@@ -134,7 +140,8 @@ public class Block extends Composite implements DragListener {
 				}
 			}));
 			bar.add(new Seprator());
-			//bar.add(new OutputBlock(new Output("User Input", "", "Make the user fill this field out", "", -2)));
+			// bar.add(new OutputBlock(new Output("User Input", "",
+			// "Make the user fill this field out", "", -2)));
 			bar.add(new Seprator());
 			// Inputs inputs = new Inputs(app.getApp());
 			// SC.ask("Configure inputs for step: " + app.getApp().getName(),
@@ -200,7 +207,6 @@ public class Block extends Composite implements DragListener {
 			wrap.setApp(result);
 			listener.blockAdded(wrap, app.getPosition());
 		}
-		
 
 	}
 
@@ -220,9 +226,9 @@ public class Block extends Composite implements DragListener {
 
 	public void validate() {
 		removeStyleName("hoverO");
-		for(int i=0;i<inputPanel.getWidgetCount();i++){
-			InputBlock inputBlock  = (InputBlock) inputPanel.getWidget(i);
-			if(inputBlock.getInput().getMapped()!=null&&inputBlock.getInput().getParent().getPosition()<inputBlock.getInput().getMapped().getParent().getPosition()){
+		for (int i = 0; i < inputPanel.getWidgetCount(); i++) {
+			InputBlock inputBlock = (InputBlock) inputPanel.getWidget(i);
+			if (inputBlock.getInput().getMapped() != null && inputBlock.getInput().getParent().getPosition() < inputBlock.getInput().getMapped().getParent().getPosition()) {
 				inputBlock.inValidate();
 			}
 		}
