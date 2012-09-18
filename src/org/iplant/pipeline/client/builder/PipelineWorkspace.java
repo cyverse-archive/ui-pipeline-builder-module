@@ -27,6 +27,9 @@ import com.google.gwt.event.dom.client.BlurEvent;
 import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyPressEvent;
+import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -166,7 +169,22 @@ public class PipelineWorkspace extends Composite {
 				center.insert(nameLabel, 0);
 			}
 		});
-
+		nameBox.addKeyPressHandler(new KeyPressHandler() {
+			@Override
+			public void onKeyPress(KeyPressEvent event) {
+				if(event.getCharCode()==KeyCodes.KEY_ENTER){
+					nameBox.setFocus(false);
+				}
+			}
+		});
+		descBox.addKeyPressHandler(new KeyPressHandler() {
+			@Override
+			public void onKeyPress(KeyPressEvent event) {
+				if(event.getCharCode()==KeyCodes.KEY_ENTER){
+					descBox.setFocus(false);
+				}
+			}
+		});
 		descLabel.addDomHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
@@ -181,9 +199,9 @@ public class PipelineWorkspace extends Composite {
 			@Override
 			public void onBlur(BlurEvent event) {
 				center.remove(1);
-				String descT = pipeline.getDescription();
+				String descT = descBox.getText();
 				if(descT.length()>30){
-					nameLabel.setToolTip(descT);
+					descLabel.setToolTip(descT);
 					descT= descT.substring(0, 27)+"...";
 				}
 				descLabel.setText(descT);

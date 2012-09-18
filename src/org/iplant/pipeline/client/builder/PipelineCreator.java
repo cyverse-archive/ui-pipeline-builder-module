@@ -70,8 +70,8 @@ public class PipelineCreator extends Composite {
 	private Pipeline getPipelineFromJson(JSONObject json){
 		Pipeline ret = new Pipeline();
 		JSONArray apps = (JSONArray) json.get("apps");
-		ret.setDescription(json.get("description").toString());
-		ret.setName(json.get("name").toString());
+		ret.setDescription(json.get("description").isString().stringValue());
+		ret.setName(json.get("name").isString().stringValue());
 		for(int i=0;i<apps.size();i++){
 			JSONObject appObj = (JSONObject) apps.get(i);
 			JSONArray mappingsA = (JSONArray) appObj.get("mappings");

@@ -34,7 +34,6 @@ public class DragCreator {
 	public static final int MOVE = 1;
 	public static final int COPY = 2;
 	public static final int DELETE = 3;
-	public static Element dragImageElement = getNOImageElement();
 	public static JavaScriptObject dragEvent;
 
 	public static native void addDrag(Element element, IPCType rec, DragListener listener) /*-{
@@ -241,17 +240,4 @@ public class DragCreator {
 		return img.getElement();
 	}
 
-	public static Element getOKImageElement() {
-		Image img = new Image("/images/add.png");
-		img.setWidth("20px");
-		img.setHeight("20px");
-		return img.getElement();
-	}
-
-	public static Element getNOImageElement() {
-		Image img = new Image("/images/down.png");
-		img.setWidth("20px");
-		img.setHeight("20px");
-		return img.getElement();
-	}
 }
