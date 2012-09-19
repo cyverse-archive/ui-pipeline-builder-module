@@ -324,7 +324,6 @@ body,html{
 
 /*Pipeline creator*/
 .pipe-workspace {
-	background-color: #DDD;
 	border-radius: 10px;
 	-moz-border-radius: 10px;
 	position: relative;
@@ -531,7 +530,7 @@ body,html{
 }
 
 .hoverO .block,.hoverO .htop {
-	border-top: 3px dashed white;
+	border-top: 3px dashed #84B4EA;
 }
 
 .start-block {
@@ -570,6 +569,7 @@ body,html{
 	border-radius: 5px;
 	-moz-border-radius: 5px;
 	padding: 3px;
+    z-index: 50000;
 }
 
 .tooltip-small {
@@ -579,6 +579,7 @@ body,html{
 	border-radius: 5px;
 	-moz-border-radius: 5px;
 	padding: 3px;
+    z-index: 50000;
 }
 
 .drop-here {
@@ -697,4 +698,4 @@ body,html{
 .block .center .gwt-Label{
 	padding-top:5px;	
 }
-}
+
