@@ -70,7 +70,8 @@ public class FunctionMiniBlock extends Composite implements DragListener, MouseO
 	}
 
 	@Override
-	public void dragOver(IPCType record) {
+	public boolean dragOver(IPCType record) {
+		return false;
 	}
 
 	@Override

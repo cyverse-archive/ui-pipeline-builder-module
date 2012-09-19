@@ -17,8 +17,6 @@ package org.iplant.pipeline.client.builder;
 
 import java.util.Vector;
 
-import org.iplant.pipeline.client.SC;
-import org.iplant.pipeline.client.ValueListener;
 import org.iplant.pipeline.client.dnd.DragCreator;
 import org.iplant.pipeline.client.dnd.DropListener;
 import org.iplant.pipeline.client.json.App;
@@ -26,7 +24,6 @@ import org.iplant.pipeline.client.json.IPCType;
 import org.iplant.pipeline.client.json.PipeApp;
 import org.iplant.pipeline.client.json.PipeComponent;
 import org.iplant.pipeline.client.json.Pipeline;
-import org.iplant.pipeline.client.json.PipelineApp;
 import org.iplant.pipeline.client.json.UserApp;
 
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -56,10 +53,10 @@ public class Workspace extends FlowPanel implements DropListener, BlockChangeLis
 
 	public boolean dragOver(IPCType recor) {
 		IPCType record = DragCreator.getDragSource();
-		if (record instanceof UserApp) {
-			// addStyleName("hover");
+		if (record instanceof UserApp|| record instanceof App|| record instanceof PipeComponent) {
+			return true;
 		}
-		return true;
+		return false;
 	}
 
 	public void dragLeave(IPCType record) {

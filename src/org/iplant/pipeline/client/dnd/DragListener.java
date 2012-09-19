@@ -24,7 +24,7 @@ public interface DragListener {
 	
 	public void dragStart(IPCType record);
 	public void dragEnter(IPCType record);
-	public void dragOver(IPCType record);
+	public boolean dragOver(IPCType record);
 	public void dragLeave(IPCType record);
 	public void drop(IPCType record);
 	public void dragEnd(IPCType record);

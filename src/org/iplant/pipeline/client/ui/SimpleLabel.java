@@ -21,12 +21,12 @@ import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
-import com.google.gwt.user.client.ui.VerticalPanel;
 
-public class SimpleLabel extends VerticalPanel implements MouseOverHandler, MouseOutHandler {
+public class SimpleLabel extends FlowPanel implements MouseOverHandler, MouseOutHandler {
 	protected PopupPanel toolTip;
 
 	public SimpleLabel(String title) {
@@ -80,6 +80,7 @@ public class SimpleLabel extends VerticalPanel implements MouseOverHandler, Mous
 		public void run() {
 			toolTip.setPopupPosition(getAbsoluteLeft(), getAbsoluteTop() + getOffsetHeight() + 4);
 			toolTip.show();
+			toolTip.setAutoHideEnabled(true);
 		}
 	};
 

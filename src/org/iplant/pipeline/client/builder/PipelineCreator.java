@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Vector;
 
+import org.iplant.pipeline.client.Resources;
 import org.iplant.pipeline.client.dnd.DragCreator;
 import org.iplant.pipeline.client.json.App;
 import org.iplant.pipeline.client.json.Input;
@@ -41,7 +42,9 @@ public class PipelineCreator extends Composite {
 	HorizontalPanel main = new HorizontalPanel();
 
 	public PipelineCreator() {
-		workspace = new PipelineWorkspace(new Pipeline("", "", false, 0));
+	    Resources.INSTANCE.css().ensureInjected();
+
+	    workspace = new PipelineWorkspace(new Pipeline("", "", false, 0));
 		workspace.setHeight("100%");
 		workspace.setWidth("100%");
 		main.setStyleName("pipe-table");
@@ -70,6 +73,8 @@ public class PipelineCreator extends Composite {
 	private Pipeline getPipelineFromJson(JSONObject json){
 		Pipeline ret = new Pipeline();
 		JSONArray apps = (JSONArray) json.get("apps");
+		ret.setDescription(json.get("description").isString().stringValue());
+		ret.setName(json.get("name").isString().stringValue());
 		for(int i=0;i<apps.size();i++){
 			JSONObject appObj = (JSONObject) apps.get(i);
 			JSONArray mappingsA = (JSONArray) appObj.get("mappings");
@@ -115,6 +120,8 @@ public class PipelineCreator extends Composite {
 	 */
 	public JSONObject getPipelineJson() {
 		JSONObject ret = new JSONObject();
+		ret.put("name", new JSONString(workspace.getPipeline().getName()));
+		ret.put("description",new JSONString( workspace.getPipeline().getDescription()));
 		JSONArray appsArray = new JSONArray();
 		Vector<PipeComponent> steps = workspace.getPipeline().getSteps();
 		int i=0;

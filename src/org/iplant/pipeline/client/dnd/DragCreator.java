@@ -20,6 +20,7 @@ import org.iplant.pipeline.client.json.IPCType;
 import org.iplant.pipeline.client.json.Input;
 import org.iplant.pipeline.client.json.Output;
 
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONBoolean;
@@ -33,35 +34,47 @@ public class DragCreator {
 	public static final int MOVE = 1;
 	public static final int COPY = 2;
 	public static final int DELETE = 3;
+	public static JavaScriptObject dragEvent;
 
 	public static native void addDrag(Element element, IPCType rec, DragListener listener) /*-{
 		function handleDragStart(e) {
+
 			var dragIcon = listener.@org.iplant.pipeline.client.dnd.DragListener::getDragImage(Lorg/iplant/pipeline/client/json/IPCType;)(rec);
 			e.dataTransfer.setDragImage(dragIcon, -10, -10);
-			e.dataTransfer.effectAllowed = 'copy';
+			//e.dataTransfer.effectAllowed = 'copy';
 			@org.iplant.pipeline.client.dnd.DragCreator::draggedRecord = rec;
 			listener.@org.iplant.pipeline.client.dnd.DragListener::dragStart(Lorg/iplant/pipeline/client/json/IPCType;)(rec);
+			e.dataTransfer.effectAllowed = 'all';
+
 			if (element.getAttribute("data-downloadurl") != null) {
 				e.dataTransfer.setData("DownloadURL", element.getAttribute("data-downloadurl"));
 			} else {
 				e.dataTransfer.setData('Text',rec.@org.iplant.pipeline.client.json.IPCType::getId()()); // required otherwise doesn't work
+				@org.iplant.pipeline.client.dnd.DragCreator::dragEvent = dragIcon;
 			}
 		}
 
 		function handleDragOver(e) {
-			if (e.preventDefault)
-				e.preventDefault();
-			listener.@org.iplant.pipeline.client.dnd.DragListener::dragOver(Lorg/iplant/pipeline/client/json/IPCType;)(rec);
-
-			//e.dataTransfer.dropEffect = 'move'; // See the section on the DataTransfer object.
-			//this.style.border="1px dashed #84B4EA";
+			if (e.stopPropagation) {
+				e.stopPropagation(); // stops the browser from redirecting.
+			}
+			if(e.preventDefault)
+			e.preventDefault();
+			var canDrop = listener.@org.iplant.pipeline.client.dnd.DragListener::dragOver(Lorg/iplant/pipeline/client/json/IPCType;)(rec);
+			if (canDrop)
+				e.dataTransfer.dropEffect = 'copy';
+			else {
+				e.dataTransfer.dropEffect = 'move';
+			}
 			return false;
 		}
 
 		function handleDragEnter(e) {
+			if(e.preventDefault)
+			e.preventDefault();
 			// this / e.target is the current hover target.
 			listener.@org.iplant.pipeline.client.dnd.DragListener::dragEnter(Lorg/iplant/pipeline/client/json/IPCType;)(rec);
-			return false;
+			return true;
 		}
 
 		function handleDragLeave(e) {
@@ -75,7 +88,7 @@ public class DragCreator {
 			if (e.preventDefault)
 				e.preventDefault();
 			var data = e.dataTransfer.getData('Text');
-			if (data&&isNaN(data)) {
+			if (data && isNaN(data)) {
 				//				//item is an json app from iplant
 				var obj = eval("(" + data + ")");
 				var app = @org.iplant.pipeline.client.dnd.DragCreator::createApp(Lcom/google/gwt/core/client/JavaScriptObject;)(obj);
@@ -97,21 +110,34 @@ public class DragCreator {
 	}-*/;
 
 	public static native void addDrop(Element element, IPCType rec, DropListener listener) /*-{
-
 		function handleDragOver(e) {
-			if (e.preventDefault)
-				e.preventDefault(); // allows us to drop
-			e.dataTransfer.dropEffect = 'copy';
-			listener.@org.iplant.pipeline.client.dnd.DropListener::dragOver(Lorg/iplant/pipeline/client/json/IPCType;)(rec);
-			//			return false;
+			if (e.stopPropagation) {
+				e.stopPropagation(); // stops the browser from redirecting.
+			}
+			if(e.preventDefault)
+			e.preventDefault();
+			var canDrop = listener.@org.iplant.pipeline.client.dnd.DropListener::dragOver(Lorg/iplant/pipeline/client/json/IPCType;)(rec);
+			if (canDrop)
+				e.dataTransfer.dropEffect = 'copy';
+			else {
+				e.dataTransfer.dropEffect = 'move';
+			}
+			return false;
 		}
 
 		function handleDragEnter(e) {
-			if (e.preventDefault)
-				e.preventDefault(); // allows us to drop
-			e.dataTransfer.dropEffect = 'copy';
-			//			return false;
-		 	listener.@org.iplant.pipeline.client.dnd.DropListener::dragEnter(Lorg/iplant/pipeline/client/json/IPCType;)(rec);
+			if (e.stopPropagation) {
+				e.stopPropagation(); // stops the browser from redirecting.
+			}
+			if(e.preventDefault)
+			e.preventDefault();
+			var canDrop = listener.@org.iplant.pipeline.client.dnd.DropListener::dragEnter(Lorg/iplant/pipeline/client/json/IPCType;)(rec);
+			if (canDrop)
+				e.dataTransfer.dropEffect = 'copy';
+			else {
+				e.dataTransfer.dropEffect = 'move';
+			}
+			return false;
 		}
 
 		function handleDragLeave(e) {
@@ -143,7 +169,7 @@ public class DragCreator {
 				}
 			}
 		}
-		addEvent(element, 'dragenter', handleDragEnter);
+		//		addEvent(element, 'dragenter', handleDragEnter);
 		addEvent(element, 'dragover', handleDragOver);
 		addEvent(element, 'dragleave', handleDragLeave);
 		addEvent(element, 'drop', handleDrop);
@@ -213,4 +239,5 @@ public class DragCreator {
 		img.setHeight("20px");
 		return img.getElement();
 	}
+
 }

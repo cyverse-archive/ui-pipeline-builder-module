@@ -93,9 +93,10 @@ public class InputBlock extends Composite implements MouseOverHandler, MouseOutH
 		IPCType record = DragCreator.getDragSource();
 		if (record instanceof Output) {
 			Output temp = (Output) record;
-			if (temp.getParent().getPosition() < input.getParent().getPosition())
+			if (temp.getParent().getPosition() < input.getParent().getPosition()) {
 				top.getElement().getStyle().setBackgroundColor("#A5CAF4");
-			else {
+				return true;
+			} else {
 				return false;
 
 			}
