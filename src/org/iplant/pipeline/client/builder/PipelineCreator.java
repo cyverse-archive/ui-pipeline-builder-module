@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Vector;
 
+import org.iplant.pipeline.client.Resources;
 import org.iplant.pipeline.client.dnd.DragCreator;
 import org.iplant.pipeline.client.json.App;
 import org.iplant.pipeline.client.json.Input;
@@ -41,7 +42,9 @@ public class PipelineCreator extends Composite {
 	HorizontalPanel main = new HorizontalPanel();
 
 	public PipelineCreator() {
-		workspace = new PipelineWorkspace(new Pipeline("", "", false, 0));
+	    Resources.INSTANCE.css().ensureInjected();
+
+	    workspace = new PipelineWorkspace(new Pipeline("", "", false, 0));
 		workspace.setHeight("100%");
 		workspace.setWidth("100%");
 		main.setStyleName("pipe-table");

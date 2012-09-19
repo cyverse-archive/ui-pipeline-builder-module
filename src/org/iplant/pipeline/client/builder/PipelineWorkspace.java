@@ -15,9 +15,9 @@
  */
 package org.iplant.pipeline.client.builder;
 
+import org.iplant.pipeline.client.Resources;
 import org.iplant.pipeline.client.dnd.DragCreator;
 import org.iplant.pipeline.client.dnd.DropListener;
-import org.iplant.pipeline.client.images.Resources;
 import org.iplant.pipeline.client.json.App;
 import org.iplant.pipeline.client.json.IPCType;
 import org.iplant.pipeline.client.json.Pipeline;
@@ -30,6 +30,8 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
+import com.google.gwt.event.dom.client.KeyUpEvent;
+import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -169,18 +171,19 @@ public class PipelineWorkspace extends Composite {
 				center.insert(nameLabel, 0);
 			}
 		});
-		nameBox.addKeyPressHandler(new KeyPressHandler() {
+		nameBox.addKeyUpHandler(new KeyUpHandler() {
 			@Override
-			public void onKeyPress(KeyPressEvent event) {
-				if(event.getCharCode()==KeyCodes.KEY_ENTER){
+			public void onKeyUp(KeyUpEvent event) {
+				if (event.getNativeEvent().getKeyCode() == KeyCodes.KEY_ENTER) {
 					nameBox.setFocus(false);
 				}
 			}
 		});
-		descBox.addKeyPressHandler(new KeyPressHandler() {
+		
+		descBox.addKeyUpHandler(new KeyUpHandler() {
 			@Override
-			public void onKeyPress(KeyPressEvent event) {
-				if(event.getCharCode()==KeyCodes.KEY_ENTER){
+			public void onKeyUp(KeyUpEvent event) {
+				if (event.getNativeEvent().getKeyCode() == KeyCodes.KEY_ENTER) {
 					descBox.setFocus(false);
 				}
 			}

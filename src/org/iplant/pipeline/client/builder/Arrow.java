@@ -16,7 +16,7 @@
 package org.iplant.pipeline.client.builder;
 
 
-import org.iplant.pipeline.client.images.Resources;
+import org.iplant.pipeline.client.Resources;
 
 import com.google.gwt.user.client.ui.HTML;
 
