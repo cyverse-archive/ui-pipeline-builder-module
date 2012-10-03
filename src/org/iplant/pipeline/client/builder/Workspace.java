@@ -21,6 +21,7 @@ import org.iplant.pipeline.client.dnd.DragCreator;
 import org.iplant.pipeline.client.dnd.DropListener;
 import org.iplant.pipeline.client.json.App;
 import org.iplant.pipeline.client.json.IPCType;
+import org.iplant.pipeline.client.json.Input;
 import org.iplant.pipeline.client.json.PipeApp;
 import org.iplant.pipeline.client.json.PipeComponent;
 import org.iplant.pipeline.client.json.Pipeline;
@@ -83,11 +84,13 @@ public class Workspace extends FlowPanel implements DropListener, BlockChangeLis
 				}
 			} else {
 				wrappers.add(wrap);
-				add(new Block(wrap, Workspace.this));
+				add(new Block(wrap, Workspace.this,false));
 				for (int i = 0; i < wrappers.size(); i++) {
 					wrappers.get(i).setPosition(i);
 				}
 			}
+		}else if(record instanceof Input){
+			record.setDragAction(IPCType.ACTION_DELETE);
 		}
 		removeStyleName("hover");
 	}
@@ -100,7 +103,7 @@ public class Workspace extends FlowPanel implements DropListener, BlockChangeLis
 		PipeApp wrap = new PipeApp(-1, app.getId(), wrappers.size());
 		wrap.setApp(app);
 		wrappers.add(wrap);
-		add(new Block(wrap, Workspace.this));
+		add(new Block(wrap, Workspace.this,false));
 		for (int i = 0; i < wrappers.size(); i++) {
 			wrappers.get(i).setPosition(i);
 		}
@@ -144,7 +147,7 @@ public class Workspace extends FlowPanel implements DropListener, BlockChangeLis
 	}
 
 	public void blockAdded(PipeComponent wrapper, int before) {
-		insert(new Block(wrapper, this), before + offset);
+		insert(new Block(wrapper, this,false), before + offset);
 		wrappers.insertElementAt(wrapper, before);
 		for (int i = 0; i < wrappers.size(); i++) {
 			wrappers.get(i).setPosition(i);
@@ -174,7 +177,7 @@ public class Workspace extends FlowPanel implements DropListener, BlockChangeLis
 
 		clear();
 		for (PipeComponent wrapper : wrappers) {
-			add(new Block(wrapper, this));
+			add(new Block(wrapper, this,true));
 		}
 	}
 

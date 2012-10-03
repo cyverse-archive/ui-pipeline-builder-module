@@ -48,7 +48,7 @@ public class Block extends Composite implements DragListener {
 	FlowPanel temp = new FlowPanel();
 	private Workspace workspace;
 
-	public Block(PipeComponent app, BlockChangeListener listener) {
+	public Block(PipeComponent app, BlockChangeListener listener,boolean expanded) {
 		this.listener = listener;
 		startBlock.setStyleName("block");
 		if (app instanceof PipelineApp)
@@ -56,6 +56,13 @@ public class Block extends Composite implements DragListener {
 		inputPanel = new HorizontalPanel();
 		outputPanel = new HorizontalPanel();
 		outputPanel.setVisible(false);
+		boolean hasMapping = false;
+		
+		for(Input input : app.getInputs()){
+			if(input.getMapped()!=null)
+				hasMapping = true;
+		}
+		if(expanded&&hasMapping)
 		inputPanel.setVisible(false);
 		inputPanel.setStyleName("input-panel");
 		outputPanel.setStyleName("output-panel");
@@ -171,7 +178,8 @@ public class Block extends Composite implements DragListener {
 		getElement().getStyle().setOpacity(.3);
 	}
 
-	public void dragEnter(IPCType record) {
+	public boolean dragEnter(IPCType record) {
+		return false;
 	}
 
 	public boolean dragOver(IPCType record) {

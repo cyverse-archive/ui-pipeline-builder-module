@@ -15,8 +15,9 @@
  */
 package org.iplant.pipeline.client.builder;
 
+import org.iplant.pipeline.client.SC;
 import org.iplant.pipeline.client.dnd.DragCreator;
-import org.iplant.pipeline.client.dnd.DropListener;
+import org.iplant.pipeline.client.dnd.DragListener;
 import org.iplant.pipeline.client.json.IPCType;
 import org.iplant.pipeline.client.json.Input;
 import org.iplant.pipeline.client.json.Output;
@@ -32,7 +33,7 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.PopupPanel;
 
-public class InputBlock extends Composite implements MouseOverHandler, MouseOutHandler, DropListener {
+public class InputBlock extends Composite implements MouseOverHandler, MouseOutHandler, DragListener {
 
 	private Input input;
 	private PopupPanel toolTip;
@@ -56,6 +57,7 @@ public class InputBlock extends Composite implements MouseOverHandler, MouseOutH
 		if (!input.isRequired()) {
 			name.getElement().getStyle().setOpacity(.6);
 		}
+		
 		name.setStyleName("name");
 		bottom.add(name);
 		name.setHTML(input.getName());
@@ -64,7 +66,8 @@ public class InputBlock extends Composite implements MouseOverHandler, MouseOutH
 		toolTip.setStyleName("tooltip-small");
 		addDomHandler(this, MouseOutEvent.getType());
 		addDomHandler(this, MouseOverEvent.getType());
-		DragCreator.addDrop(top.getElement(), null, this);
+		top.getElement().setDraggable(Element.DRAGGABLE_TRUE);
+		DragCreator.addDrag(top.getElement(), input, this);
 	}
 
 	public void onMouseOut(MouseOutEvent event) {
@@ -132,10 +135,13 @@ public class InputBlock extends Composite implements MouseOverHandler, MouseOutH
 	}
 
 	public void dragEnd(IPCType record) {
+		if(record.getDragAction()==IPCType.ACTION_DELETE){
+			inValidate();
+		}
 	}
 
 	public Element getDragImage(IPCType record) {
-		return null;
+		return top.getElement();
 	}
 
 	public Input getInput() {
@@ -149,4 +155,7 @@ public class InputBlock extends Composite implements MouseOverHandler, MouseOutH
 
 	}
 
+	@Override
+	public void dragStart(IPCType record) {
+	}
 }
