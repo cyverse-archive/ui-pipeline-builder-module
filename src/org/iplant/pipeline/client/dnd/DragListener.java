@@ -23,7 +23,7 @@ import com.google.gwt.dom.client.Element;
 public interface DragListener {
 	
 	public void dragStart(IPCType record);
-	public void dragEnter(IPCType record);
+	public boolean dragEnter(IPCType record);
 	public boolean dragOver(IPCType record);
 	public void dragLeave(IPCType record);
 	public void drop(IPCType record);

@@ -70,11 +70,18 @@ public class DragCreator {
 		}
 
 		function handleDragEnter(e) {
+			if (e.stopPropagation) {
+				e.stopPropagation(); // stops the browser from redirecting.
+			}
 			if(e.preventDefault)
 			e.preventDefault();
-			// this / e.target is the current hover target.
-			listener.@org.iplant.pipeline.client.dnd.DragListener::dragEnter(Lorg/iplant/pipeline/client/json/IPCType;)(rec);
-			return true;
+			var canDrop = listener.@org.iplant.pipeline.client.dnd.DragListener::dragEnter(Lorg/iplant/pipeline/client/json/IPCType;)(rec);
+			if (canDrop)
+				e.dataTransfer.dropEffect = 'copy';
+			else {
+				e.dataTransfer.dropEffect = 'move';
+			}
+			return false;
 		}
 
 		function handleDragLeave(e) {

@@ -35,7 +35,7 @@ public class FunctionMiniBlock extends Composite implements DragListener, MouseO
 	private Block block;
 	
 	public FunctionMiniBlock(PipelineApp pipeline){
-		this.block=new Block(pipeline, null);
+		this.block=new Block(pipeline, null,false);
 		HTML name = new HTML();
 		name.setStyleName("function-block");
 		name.setHTML(pipeline.getName());
@@ -66,7 +66,8 @@ public class FunctionMiniBlock extends Composite implements DragListener, MouseO
 	}
 
 	@Override
-	public void dragEnter(IPCType record) {
+	public boolean dragEnter(IPCType record) {
+		return false;
 	}
 
 	@Override
