@@ -8,7 +8,7 @@ import java.util.AbstractMap;
  * @author psarando
  *
  */
-public interface AppMapping {
+public interface PipelineAppMapping {
 
     public int getStep();
 

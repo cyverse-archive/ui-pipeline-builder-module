@@ -8,7 +8,7 @@ import java.util.List;
  * @author psarando
  *
  */
-public interface App {
+public interface PipelineApp {
 
     public String getId();
 
@@ -26,15 +26,15 @@ public interface App {
 
     public void setStep(int step);
 
-    public List<AppMapping> getMappings();
+    public List<PipelineAppMapping> getMappings();
 
-    public void setMappings(List<AppMapping> mappings);
+    public void setMappings(List<PipelineAppMapping> mappings);
 
-    public List<AppData> getInputs();
+    public List<PipelineAppData> getInputs();
 
-    public void setInputs(List<AppData> inputs);
+    public void setInputs(List<PipelineAppData> inputs);
 
-    public List<AppData> getOutputs();
+    public List<PipelineAppData> getOutputs();
 
-    public void setOutputs(List<AppData> outputs);
+    public void setOutputs(List<PipelineAppData> outputs);
 }

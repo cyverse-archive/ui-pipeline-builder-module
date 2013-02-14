@@ -18,7 +18,7 @@ public interface Pipeline {
 
     public void setDescription(String description);
 
-    public List<App> getApps();
+    public List<PipelineApp> getApps();
 
-    public void setApps(List<App> apps);
+    public void setApps(List<PipelineApp> apps);
 }

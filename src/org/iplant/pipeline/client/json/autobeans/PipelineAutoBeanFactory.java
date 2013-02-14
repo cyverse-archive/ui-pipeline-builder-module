@@ -13,9 +13,9 @@ public interface PipelineAutoBeanFactory extends AutoBeanFactory {
 
     AutoBean<Pipeline> pipeline();
 
-    AutoBean<App> app();
+    AutoBean<PipelineApp> app();
 
-    AutoBean<AppMapping> appMapping();
+    AutoBean<PipelineAppMapping> appMapping();
 
-    AutoBean<AppData> appData();
+    AutoBean<PipelineAppData> appData();
 }

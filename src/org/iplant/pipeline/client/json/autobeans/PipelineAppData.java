@@ -6,7 +6,7 @@ package org.iplant.pipeline.client.json.autobeans;
  * @author psarando
  *
  */
-public interface AppData {
+public interface PipelineAppData {
 
     public String getId();
 
