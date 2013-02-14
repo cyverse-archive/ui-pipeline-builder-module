@@ -15,10 +15,14 @@
  */
 package org.iplant.pipeline.client.dnd;
 
+import java.util.List;
+
 import org.iplant.pipeline.client.json.App;
 import org.iplant.pipeline.client.json.IPCType;
 import org.iplant.pipeline.client.json.Input;
 import org.iplant.pipeline.client.json.Output;
+import org.iplant.pipeline.client.json.autobeans.PipelineApp;
+import org.iplant.pipeline.client.json.autobeans.PipelineAppData;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.Element;
@@ -199,6 +203,7 @@ public class DragCreator {
 		return createApp(new JSONObject(json));
 	}
 
+	@Deprecated
 	public static App createApp(JSONObject json) {
 		App app = new App();
 		app.setName(((JSONString) json.get("name")).stringValue());
@@ -239,6 +244,45 @@ public class DragCreator {
 
 		return app;
 	}
+
+    public static App createApp(PipelineApp json) {
+        App app = new App();
+        app.setName(json.getName());
+        app.setDescription(json.getDescription());
+        app.setId(1);
+        app.setID(json.getId());
+
+        List<PipelineAppData> inputs = json.getInputs();
+        app.setAppDataInputs(inputs);
+        for (PipelineAppData dataObj : inputs) {
+            Input input = new Input();
+            if (dataObj != null) {
+                input.setName(dataObj.getName());
+                input.setDescription(dataObj.getDescription());
+                input.setId(1);
+                input.setRequired(dataObj.getRequired());
+                input.setType("File:" + dataObj.getFormat());
+                input.setID(dataObj.getId());
+                app.addInput(input);
+            }
+        }
+
+        List<PipelineAppData> outputs = json.getOutputs();
+        app.setAppDataOutputs(outputs);
+        for (PipelineAppData dataObj : outputs) {
+            Output output = new Output();
+            if (dataObj != null) {
+                output.setName(dataObj.getName());
+                output.setDescription(dataObj.getDescription());
+                output.setId(1);
+                output.setType(dataObj.getFormat());
+                output.setID(dataObj.getId());
+                app.addOutput(output);
+            }
+        }
+
+        return app;
+    }
 
 	public static Element getImageElement(String src) {
 		Image img = new Image(src);

@@ -1,7 +1,10 @@
 package org.iplant.pipeline.client.json;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Vector;
+
+import org.iplant.pipeline.client.json.autobeans.PipelineAppData;
 
 import com.google.gwt.json.client.JSONArray;
 
@@ -12,7 +15,7 @@ public class App extends IPCType{
 	 */
 	private static final long serialVersionUID = 716607128574843142L;
 	private Vector<Input> inputs;
-	private Vector<Output> outputs;
+	private final Vector<Output> outputs;
 
 	private String name;
 	private String description;
@@ -21,6 +24,8 @@ public class App extends IPCType{
 	private boolean stared = false;
 	private JSONArray inputJson;
 	private JSONArray outputJson;
+	private List<PipelineAppData> inputAppData;
+    private List<PipelineAppData> outputAppData;
 
 	private int publicId;
 	private String ID;
@@ -123,19 +128,39 @@ public class App extends IPCType{
 		return ID; 
 	}
 
+    @Deprecated
 	public JSONArray getInputJson() {
 		return inputJson;
 	}
 
+    @Deprecated
 	public void setInputJson(JSONArray inputJson) {
 		this.inputJson = inputJson;
 	}
 
+    @Deprecated
 	public JSONArray getOutputJson() {
 		return outputJson;
 	}
 
+    @Deprecated
 	public void setOutputJson(JSONArray outputJson) {
 		this.outputJson = outputJson;
 	}
+
+	public List<PipelineAppData> getAppDataInputs() {
+	    return inputAppData;
+	}
+
+	public void setAppDataInputs(List<PipelineAppData> inputs) {
+        inputAppData = inputs;
+    }
+
+    public List<PipelineAppData> getAppDataOutputs() {
+        return outputAppData;
+    }
+
+    public void setAppDataOutputs(List<PipelineAppData> outputs) {
+        outputAppData = outputs;
+    }
 }

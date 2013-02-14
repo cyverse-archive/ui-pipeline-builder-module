@@ -15,9 +15,12 @@
  */
 package org.iplant.pipeline.client.builder;
 
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 
 import org.iplant.pipeline.client.Resources;
@@ -28,7 +31,11 @@ import org.iplant.pipeline.client.json.Output;
 import org.iplant.pipeline.client.json.PipeApp;
 import org.iplant.pipeline.client.json.PipeComponent;
 import org.iplant.pipeline.client.json.Pipeline;
+import org.iplant.pipeline.client.json.autobeans.PipelineApp;
+import org.iplant.pipeline.client.json.autobeans.PipelineAppMapping;
+import org.iplant.pipeline.client.json.autobeans.PipelineAutoBeanFactory;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONNumber;
 import com.google.gwt.json.client.JSONObject;
@@ -40,6 +47,7 @@ public class PipelineCreator extends Composite {
 
 	PipelineWorkspace workspace;
 	HorizontalPanel main = new HorizontalPanel();
+    private final PipelineAutoBeanFactory factory = GWT.create(PipelineAutoBeanFactory.class);;
 
 	public PipelineCreator() {
 	    Resources.INSTANCE.css().ensureInjected();
@@ -58,6 +66,7 @@ public class PipelineCreator extends Composite {
 	 * This will load an existing pipeline into the creator.
 	 * @param json The json representation of a Pipeline
 	 */
+    @Deprecated
 	public void loadPipeline(JSONObject json) {
 		main.remove(workspace);
 		workspace = new PipelineWorkspace(getPipelineFromJson(json));
@@ -66,10 +75,12 @@ public class PipelineCreator extends Composite {
 		main.insert(workspace, 0);
 	}
 	
+    @Deprecated
 	public void appendApp(JSONObject app){
 		workspace.appendApp(DragCreator.createApp(app));
 	}
 	
+    @Deprecated
 	private Pipeline getPipelineFromJson(JSONObject json){
 		Pipeline ret = new Pipeline();
 		JSONArray apps = (JSONArray) json.get("apps");
@@ -118,6 +129,7 @@ public class PipelineCreator extends Composite {
 	 * 
 	 * @return the json in sting format of the new pipeline
 	 */
+    @Deprecated
 	public JSONObject getPipelineJson() {
 		JSONObject ret = new JSONObject();
 		ret.put("name", new JSONString(workspace.getPipeline().getName()));
@@ -168,5 +180,128 @@ public class PipelineCreator extends Composite {
 		ret.put("apps", appsArray);
 		return ret;
 	}
+
+    /**
+     * This will load an existing pipeline into the creator.
+     * 
+     * @param json The json representation of a Pipeline
+     */
+    public void loadPipeline(org.iplant.pipeline.client.json.autobeans.Pipeline json) {
+        main.remove(workspace);
+        workspace = new PipelineWorkspace(buildPipeline(json));
+        workspace.setHeight("100%");
+        workspace.setWidth("100%");
+        main.insert(workspace, 0);
+    }
+
+    private Pipeline buildPipeline(org.iplant.pipeline.client.json.autobeans.Pipeline json) {
+        Pipeline ret = new Pipeline();
+        List<PipelineApp> apps = json.getApps();
+        ret.setDescription(json.getDescription());
+        ret.setName(json.getName());
+
+        if (apps != null) {
+            int i = 0;
+            for (PipelineApp appObj : apps) {
+                App app = DragCreator.createApp(appObj);
+
+                List<PipelineAppMapping> mappingsA = appObj.getMappings();
+                if (mappingsA != null) {
+                    for (PipelineAppMapping map : mappingsA) {
+                        int step = map.getStep();
+                        PipeComponent stepC = ret.getSteps().get(step);
+                        App appM = ((PipeApp)stepC).getApp();
+                        Map<String, String> maps = map.getMap();
+                        for (String inputId : maps.keySet()) {
+                            String outputId = maps.get(inputId);
+                            for (Output output : appM.getOutputs()) {
+                                if (output.getID().equals(outputId)) {
+                                    output.setParent(stepC);
+                                    for (Input input : app.getInputs()) {
+                                        if (input.getID().equals(inputId)) {
+                                            input.setMapped(output);
+                                            break;
+                                        }
+                                    }
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+                PipeApp pipeApp = new PipeApp(1, 1, i++);
+                pipeApp.setPosition(i);
+                pipeApp.setApp(app);
+                ret.addStep(pipeApp);
+            }
+        }
+
+        return ret;
+    }
+
+    public void appendApp(PipelineApp app) {
+        workspace.appendApp(DragCreator.createApp(app));
+    }
+
+    /**
+     * This will return the Pipeline AutoBean that represents the pipeline that is being built.
+     * 
+     * @return the AutoBean of the new pipeline
+     */
+    public org.iplant.pipeline.client.json.autobeans.Pipeline getPipeline() {
+        org.iplant.pipeline.client.json.autobeans.Pipeline ret = factory.pipeline().as();
+        ret.setName(workspace.getPipeline().getName());
+        ret.setDescription(workspace.getPipeline().getDescription());
+
+        List<PipelineApp> apps = new ArrayList<PipelineApp>();
+        Vector<PipeComponent> steps = workspace.getPipeline().getSteps();
+        for (PipeComponent step : steps) {
+            App app = ((PipeApp)step).getApp();
+
+            PipelineApp jsonApp = factory.app().as();
+            jsonApp.setId(app.getID());
+            jsonApp.setName(app.getName());
+            jsonApp.setDescription(app.getDescription());
+            jsonApp.setStep(step.getPosition());
+
+            HashMap<PipeComponent, ArrayList<Input>> mappings = new HashMap<PipeComponent, ArrayList<Input>>();
+            for (Input input : step.getInputs()) {
+                if (input.getMapped() != null) {
+                    PipeComponent parent = input.getMapped().getParent();
+                    ArrayList<Input> maps = mappings.get(parent);
+                    if (maps == null)
+                        maps = new ArrayList<Input>();
+                    maps.add(input);
+                    mappings.put(parent, maps);
+                }
+            }
+
+            List<PipelineAppMapping> jsonMappings = new ArrayList<PipelineAppMapping>();
+            jsonApp.setMappings(jsonMappings);
+
+            for (PipeComponent mappedTo : mappings.keySet()) {
+                App mappedApp = ((PipeApp)mappedTo).getApp();
+                PipelineAppMapping jsonMap = factory.appMapping().as();
+                jsonMap.setStep(mappedTo.getPosition());
+                jsonMap.setId(mappedApp.getID());
+                ArrayList<Input> inputs = mappings.get(mappedTo);
+                AbstractMap<String, String> map = new HashMap<String, String>();
+                for (Input input : inputs) {
+                    map.put(input.getID(), input.getMapped().getID());
+                }
+                jsonMap.setMap(map);
+                jsonMappings.add(jsonMap);
+            }
+
+            jsonApp.setInputs(app.getAppDataInputs());
+            jsonApp.setOutputs(app.getAppDataOutputs());
+
+            apps.add(jsonApp);
+        }
+
+        ret.setApps(apps);
+
+        return ret;
+    }
 
 }
