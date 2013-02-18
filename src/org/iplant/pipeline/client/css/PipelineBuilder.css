@@ -301,7 +301,7 @@ body,html{
 	bottom: -25px;
 	opacity: 0;
 	width: 45px;
-	filter: alpha(opacity = 0);
+	filter: literal("alpha(opacity = 0)");
 }
 
 .simple-button:hover,.simple-button .gwt-Label:hover,.simple-button-sel:hover,.simple-button-sel .gwt-Label:hover
