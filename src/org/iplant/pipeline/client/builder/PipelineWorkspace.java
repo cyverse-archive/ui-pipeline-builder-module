@@ -28,8 +28,6 @@ import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
-import com.google.gwt.event.dom.client.KeyPressEvent;
-import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.user.client.ui.Composite;
@@ -41,12 +39,12 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public class PipelineWorkspace extends Composite {
-	private Image trashImg = new Image(Resources.INSTANCE.trashClose().getSafeUri().asString());
+	private final Image trashImg = new Image(Resources.INSTANCE.trashClose().getSafeUri().asString());
 	private Workspace workspace;
 	private TextBox nameBox;
 	private TextBox descBox;
 	private Pipeline pipeline;
-	private FlowPanel userInputs = new FlowPanel();
+	private final FlowPanel userInputs = new FlowPanel();
 	private SimpleLabel nameLabel;
 	private SimpleLabel descLabel;
 
@@ -81,21 +79,25 @@ public class PipelineWorkspace extends Composite {
 		trashImg.setStyleName("trash");
 
 		DragCreator.addDrop(trashImg.getElement(), new TrashCan(), new DropListener() {
-			public void drop(IPCType record) {
+			@Override
+            public void drop(IPCType record) {
 				trashImg.setUrl(Resources.INSTANCE.trashClose().getSafeUri().asString());
 				DragCreator.getDragSource().setDragAction(DragCreator.DELETE);
 			}
 
-			public boolean dragOver(IPCType record) {
+			@Override
+            public boolean dragOver(IPCType record) {
 				trashImg.setUrl(Resources.INSTANCE.trashOpen().getSafeUri().asString());
 				return true;
 			}
 
-			public void dragLeave(IPCType record) {
+			@Override
+            public void dragLeave(IPCType record) {
 				trashImg.setUrl(Resources.INSTANCE.trashClose().getSafeUri().asString());
 			}
 
-			public boolean dragEnter(IPCType record) {
+			@Override
+            public boolean dragEnter(IPCType record) {
 				trashImg.setUrl(Resources.INSTANCE.trashOpen().getSafeUri().asString());
 				return true;
 			}
@@ -123,21 +125,29 @@ public class PipelineWorkspace extends Composite {
 	private void loadNonBlocks() {
 		final FlowPanel center = new FlowPanel();
 		center.setStyleName("start-block");
-		if (pipeline.getName().equals("")) {
-			pipeline.setName("Click to edit name");
-			pipeline.setDescription("and description");
+
+		String name = pipeline.getName();
+        if (name == null || name.isEmpty()) {
+            name = "Click to edit name";
+			pipeline.setName(name);
 		}
-		nameLabel = new SimpleLabel(pipeline.getName());
-		descLabel = new SimpleLabel(pipeline.getDescription());
+        String description = pipeline.getDescription();
+        if (description == null || description.isEmpty()) {
+            description = "Click to edit description";
+            pipeline.setDescription(description);
+        }
+
+        nameLabel = new SimpleLabel(name);
+		descLabel = new SimpleLabel(description);
 		
-		String nameT = pipeline.getName();
+		String nameT = name;
 		if(nameT.length()>30){
 			nameLabel.setToolTip(nameT);
 			nameT= nameT.substring(0, 27)+"...";
 		}
 		nameLabel.setText(nameT);
 		
-		String descT = pipeline.getDescription();
+		String descT = description;
 		if(descT.length()>30){
 			nameLabel.setToolTip(descT);
 			descT= descT.substring(0, 27)+"...";
