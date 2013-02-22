@@ -1,6 +1,6 @@
 package org.iplant.pipeline.client.json.autobeans;
 
-import java.util.AbstractMap;
+import java.util.Map;
 
 /**
  * An AutoBean interface for Pipeline App Input to Output mappings.
@@ -18,7 +18,7 @@ public interface PipelineAppMapping {
 
     public void setId(String id);
 
-    public AbstractMap<String, String> getMap();
+    public Map<String, String> getMap();
 
-    public void setMap(AbstractMap<String, String> map);
+    public void setMap(Map<String, String> map);
 }

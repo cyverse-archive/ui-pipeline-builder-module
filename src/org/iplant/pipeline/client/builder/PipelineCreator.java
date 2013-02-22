@@ -15,7 +15,6 @@
  */
 package org.iplant.pipeline.client.builder;
 
-import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -285,7 +284,7 @@ public class PipelineCreator extends Composite {
                 jsonMap.setStep(mappedTo.getPosition());
                 jsonMap.setId(mappedApp.getID());
                 ArrayList<Input> inputs = mappings.get(mappedTo);
-                AbstractMap<String, String> map = new HashMap<String, String>();
+                Map<String, String> map = new HashMap<String, String>();
                 for (Input input : inputs) {
                     map.put(input.getID(), input.getMapped().getID());
                 }
