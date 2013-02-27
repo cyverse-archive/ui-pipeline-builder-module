@@ -229,7 +229,6 @@ public class PipelineCreator extends Composite {
                     }
                 }
                 PipeApp pipeApp = new PipeApp(1, 1, i++);
-                pipeApp.setPosition(i);
                 pipeApp.setApp(app);
                 ret.addStep(pipeApp);
             }
@@ -261,7 +260,7 @@ public class PipelineCreator extends Composite {
             jsonApp.setId(app.getID());
             jsonApp.setName(app.getName());
             jsonApp.setDescription(app.getDescription());
-            jsonApp.setStep(step.getPosition());
+            jsonApp.setStep(step.getPosition() + 1);
 
             HashMap<PipeComponent, ArrayList<Input>> mappings = new HashMap<PipeComponent, ArrayList<Input>>();
             for (Input input : step.getInputs()) {
@@ -281,7 +280,7 @@ public class PipelineCreator extends Composite {
             for (PipeComponent mappedTo : mappings.keySet()) {
                 App mappedApp = ((PipeApp)mappedTo).getApp();
                 PipelineAppMapping jsonMap = factory.appMapping().as();
-                jsonMap.setStep(mappedTo.getPosition());
+                jsonMap.setStep(mappedTo.getPosition() + 1);
                 jsonMap.setId(mappedApp.getID());
                 ArrayList<Input> inputs = mappings.get(mappedTo);
                 Map<String, String> map = new HashMap<String, String>();
