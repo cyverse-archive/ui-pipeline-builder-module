@@ -2,7 +2,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>org.iplantc.plugin</groupId>
+    <groupId>org.iplantc.core</groupId>
     <artifactId>pipeline-builder</artifactId>
     <packaging>jar</packaging>
     <version>gxt3Sandbox-SNAPSHOT</version>
@@ -10,7 +10,7 @@
     <url>http://project.iplantcollaborative.org</url>
     <!-- convenience to define GWT version in one place -->
     <properties>
-        <gwt.module>org.iplant.pipeline.PipelineBuilder</gwt.module>
+        <gwt.module>org.iplantc.core.PipelineBuilder</gwt.module>
         <!-- Target Java Version -->
         <jdk.version>1.6</jdk.version>
         <!-- Current GWT Version -->
@@ -50,14 +50,13 @@
         </dependency>
     </dependencies>
     <build>
-        <sourceDirectory>${basedir}/src</sourceDirectory>
         <finalName>pipeline-builder</finalName>
         <outputDirectory>${basedir}/war/WEB-INF/classes</outputDirectory>
         <plugins>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>gwt-maven-plugin</artifactId>
-                <version>2.4.0</version>
+                <version>${gwt.version}</version>
                 <executions>
                     <execution>
                         <goals>
@@ -106,7 +105,7 @@
         </plugins>
         <resources>
             <resource>
-                <directory>src</directory>
+				<directory>src/main/java</directory>
                 <includes>
                     <include>**/client/**</include>
                     <include>**/shared/**</include>
