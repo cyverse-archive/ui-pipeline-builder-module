@@ -62,8 +62,9 @@ public class Block extends Composite implements DragListener {
 			if(input.getMapped()!=null)
 				hasMapping = true;
 		}
-		if(expanded&&hasMapping)
-		inputPanel.setVisible(false);
+        if (expanded && !hasMapping) {
+            inputPanel.setVisible(false);
+        }
 		inputPanel.setStyleName("input-panel");
 		outputPanel.setStyleName("output-panel");
 		this.app = app;
@@ -72,7 +73,8 @@ public class Block extends Composite implements DragListener {
 		expandInputs.setHTML("<div class='arrow2'></div>");
 		startBlock.add(expandInputs);
 		expandInputs.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
+			@Override
+            public void onClick(ClickEvent event) {
 				inputPanel.setVisible(!inputPanel.isVisible());
 			}
 		});
@@ -107,7 +109,8 @@ public class Block extends Composite implements DragListener {
 		expandOutputs.setHTML("<div class='arrow2'></div>");
 		startBlock.add(expandOutputs);
 		expandOutputs.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
+			@Override
+            public void onClick(ClickEvent event) {
 				outputPanel.setVisible(!outputPanel.isVisible());
 			}
 		});
@@ -142,7 +145,8 @@ public class Block extends Composite implements DragListener {
 			HorizontalPanel bar = new HorizontalPanel();
 			bar.add(new Seprator());
 			bar.add(new Button("Job Options").setClickHandler(new ClickHandler() {
-				public void onClick(ClickEvent event) {
+				@Override
+                public void onClick(ClickEvent event) {
 					// options.show();
 				}
 			}));
@@ -174,15 +178,18 @@ public class Block extends Composite implements DragListener {
 		}
 	}
 
-	public void dragStart(IPCType record) {
+	@Override
+    public void dragStart(IPCType record) {
 		getElement().getStyle().setOpacity(.3);
 	}
 
-	public boolean dragEnter(IPCType record) {
+	@Override
+    public boolean dragEnter(IPCType record) {
 		return false;
 	}
 
-	public boolean dragOver(IPCType record) {
+	@Override
+    public boolean dragOver(IPCType record) {
 		IPCType rec = DragCreator.getDragSource();
 		if (rec instanceof Output) {
 			inputPanel.setVisible(true);
@@ -193,11 +200,13 @@ public class Block extends Composite implements DragListener {
 		return false;
 	}
 
-	public void dragLeave(IPCType record) {
+	@Override
+    public void dragLeave(IPCType record) {
 		removeStyleName("hoverO");
 	}
 
-	public void drop(IPCType record) {
+	@Override
+    public void drop(IPCType record) {
 		removeStyleName("hoverO");
 		getElement().getStyle().setOpacity(1);
 		IPCType rec = DragCreator.getDragSource();
@@ -218,7 +227,8 @@ public class Block extends Composite implements DragListener {
 
 	}
 
-	public void dragEnd(IPCType record) {
+	@Override
+    public void dragEnd(IPCType record) {
 		getElement().getStyle().setOpacity(1);
 		int action = record.getDragAction();
 		if (action == DragCreator.DELETE) {
@@ -228,7 +238,8 @@ public class Block extends Composite implements DragListener {
 
 	}
 
-	public Element getDragImage(IPCType record) {
+	@Override
+    public Element getDragImage(IPCType record) {
 		return startBlock.getElement();
 	}
 
