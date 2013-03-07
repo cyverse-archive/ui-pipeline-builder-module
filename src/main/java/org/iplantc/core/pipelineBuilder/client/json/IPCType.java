@@ -26,7 +26,6 @@ public class IPCType implements Serializable {
 	private static final long serialVersionUID = 8286026843520090390L;
 	protected int id;
 	private int dragAction = 0;
-	public final static int  ACTION_DELETE=2;
 
 	protected IPCType() {
 	}

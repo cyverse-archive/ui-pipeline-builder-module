@@ -15,7 +15,6 @@
  */
 package org.iplantc.core.pipelineBuilder.client.builder;
 
-import org.iplantc.core.pipelineBuilder.client.SC;
 import org.iplantc.core.pipelineBuilder.client.dnd.DragCreator;
 import org.iplantc.core.pipelineBuilder.client.dnd.DragListener;
 import org.iplantc.core.pipelineBuilder.client.json.IPCType;
@@ -35,8 +34,8 @@ import com.google.gwt.user.client.ui.PopupPanel;
 
 public class InputBlock extends Composite implements MouseOverHandler, MouseOutHandler, DragListener {
 
-	private Input input;
-	private PopupPanel toolTip;
+	private final Input input;
+	private final PopupPanel toolTip;
 	FlowPanel top = new FlowPanel();
 	HTML name = new HTML();
 	PipeComponent parent;
@@ -70,16 +69,19 @@ public class InputBlock extends Composite implements MouseOverHandler, MouseOutH
 		DragCreator.addDrag(top.getElement(), input, this);
 	}
 
-	public void onMouseOut(MouseOutEvent event) {
+	@Override
+    public void onMouseOut(MouseOutEvent event) {
 		toolTip.hide();
 	}
 
-	public void onMouseOver(MouseOverEvent event) {
+	@Override
+    public void onMouseOver(MouseOverEvent event) {
 		toolTip.setPopupPosition(getAbsoluteLeft(), getAbsoluteTop() + getOffsetHeight() + 4);
 		toolTip.show();
 	}
 
-	public boolean dragEnter(IPCType record2) {
+	@Override
+    public boolean dragEnter(IPCType record2) {
 		IPCType record = DragCreator.getDragSource();
 		if (record instanceof Output) {
 			Output temp = (Output) record;
@@ -92,7 +94,8 @@ public class InputBlock extends Composite implements MouseOverHandler, MouseOutH
 		return true;
 	}
 
-	public boolean dragOver(IPCType record2) {
+	@Override
+    public boolean dragOver(IPCType record2) {
 		IPCType record = DragCreator.getDragSource();
 		if (record instanceof Output) {
 			Output temp = (Output) record;
@@ -107,7 +110,8 @@ public class InputBlock extends Composite implements MouseOverHandler, MouseOutH
 		return true;
 	}
 
-	public void dragLeave(IPCType record2) {
+	@Override
+    public void dragLeave(IPCType record2) {
 		top.getElement().getStyle().setBackgroundColor("");
 	}
 
@@ -125,7 +129,8 @@ public class InputBlock extends Composite implements MouseOverHandler, MouseOutH
 		top.add(name);
 	}
 
-	public void drop(IPCType record2) {
+	@Override
+    public void drop(IPCType record2) {
 		IPCType record = DragCreator.getDragSource();
 		if (record instanceof Output) {
 			final Output output = (Output) record;
@@ -134,13 +139,15 @@ public class InputBlock extends Composite implements MouseOverHandler, MouseOutH
 		}
 	}
 
-	public void dragEnd(IPCType record) {
-		if(record.getDragAction()==IPCType.ACTION_DELETE){
-			inValidate();
-		}
+	@Override
+    public void dragEnd(IPCType record) {
+        if (record.getDragAction() == DragCreator.DELETE) {
+            inValidate();
+        }
 	}
 
-	public Element getDragImage(IPCType record) {
+	@Override
+    public Element getDragImage(IPCType record) {
 		return top.getElement();
 	}
 

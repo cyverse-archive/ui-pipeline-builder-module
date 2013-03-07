@@ -44,7 +44,8 @@ public class Workspace extends FlowPanel implements DropListener, BlockChangeLis
 		DragCreator.addDrop(getElement(), null, this);
 	}
 
-	public boolean dragEnter(IPCType recod) {
+	@Override
+    public boolean dragEnter(IPCType recod) {
 		IPCType record = DragCreator.getDragSource();
 		if (record instanceof UserApp) {
 			// addStyleName("hover");
@@ -52,7 +53,8 @@ public class Workspace extends FlowPanel implements DropListener, BlockChangeLis
 		return true;
 	}
 
-	public boolean dragOver(IPCType recor) {
+	@Override
+    public boolean dragOver(IPCType recor) {
 		IPCType record = DragCreator.getDragSource();
 		if (record instanceof UserApp|| record instanceof App|| record instanceof PipeComponent) {
 			return true;
@@ -60,11 +62,13 @@ public class Workspace extends FlowPanel implements DropListener, BlockChangeLis
 		return false;
 	}
 
-	public void dragLeave(IPCType record) {
+	@Override
+    public void dragLeave(IPCType record) {
 		removeStyleName("hover");
 	}
 
-	public void drop(IPCType reco) {
+	@Override
+    public void drop(IPCType reco) {
 		IPCType record = DragCreator.getDragSource();
 
 		if (record instanceof App) {
@@ -90,7 +94,7 @@ public class Workspace extends FlowPanel implements DropListener, BlockChangeLis
 				}
 			}
 		}else if(record instanceof Input){
-			record.setDragAction(IPCType.ACTION_DELETE);
+			record.setDragAction(DragCreator.DELETE);
 		}
 		removeStyleName("hover");
 	}
@@ -109,7 +113,8 @@ public class Workspace extends FlowPanel implements DropListener, BlockChangeLis
 		}
 	}
 
-	public void blockMoved(PipeComponent wrapper, int before) {
+	@Override
+    public void blockMoved(PipeComponent wrapper, int before) {
 		if (wrapper.getPosition() == before)
 			return;
 		Widget wid = getWidget(wrapper.getPosition() + offset);
@@ -128,7 +133,8 @@ public class Workspace extends FlowPanel implements DropListener, BlockChangeLis
 		revalidate();
 	}
 
-	public void blockRemoved(PipeComponent wrapper) {
+	@Override
+    public void blockRemoved(PipeComponent wrapper) {
 		remove(wrapper.getPosition() + offset);
 		wrappers.remove(wrapper.getPosition());
 		for (int i = 0; i < wrappers.size(); i++) {
@@ -146,7 +152,8 @@ public class Workspace extends FlowPanel implements DropListener, BlockChangeLis
 		}
 	}
 
-	public void blockAdded(PipeComponent wrapper, int before) {
+	@Override
+    public void blockAdded(PipeComponent wrapper, int before) {
 		insert(new Block(wrapper, this,false), before + offset);
 		wrappers.insertElementAt(wrapper, before);
 		for (int i = 0; i < wrappers.size(); i++) {
@@ -155,7 +162,8 @@ public class Workspace extends FlowPanel implements DropListener, BlockChangeLis
 		removeStyleName("hover");
 	}
 
-	public Vector<PipeComponent> getPreviousApps(int position) {
+	@Override
+    public Vector<PipeComponent> getPreviousApps(int position) {
 		Vector<PipeComponent> ret = new Vector<PipeComponent>();
 		for (int i = position - 1; i >= 0; i--) {
 			ret.add(wrappers.get(i));
