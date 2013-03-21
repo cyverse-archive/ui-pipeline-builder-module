@@ -26,10 +26,6 @@ import org.iplantc.core.pipelineBuilder.client.json.autobeans.PipelineAppData;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.Element;
-import com.google.gwt.json.client.JSONArray;
-import com.google.gwt.json.client.JSONBoolean;
-import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.ui.Image;
 
 public class DragCreator {
@@ -62,8 +58,8 @@ public class DragCreator {
 			if (e.stopPropagation) {
 				e.stopPropagation(); // stops the browser from redirecting.
 			}
-			if(e.preventDefault)
-			e.preventDefault();
+			if (e.preventDefault)
+				e.preventDefault();
 			var canDrop = listener.@org.iplantc.core.pipelineBuilder.client.dnd.DragListener::dragOver(Lorg/iplantc/core/pipelineBuilder/client/json/IPCType;)(rec);
 			if (canDrop)
 				e.dataTransfer.dropEffect = 'copy';
@@ -77,8 +73,8 @@ public class DragCreator {
 			if (e.stopPropagation) {
 				e.stopPropagation(); // stops the browser from redirecting.
 			}
-			if(e.preventDefault)
-			e.preventDefault();
+			if (e.preventDefault)
+				e.preventDefault();
 			var canDrop = listener.@org.iplantc.core.pipelineBuilder.client.dnd.DragListener::dragEnter(Lorg/iplantc/core/pipelineBuilder/client/json/IPCType;)(rec);
 			if (canDrop)
 				e.dataTransfer.dropEffect = 'copy';
@@ -96,14 +92,8 @@ public class DragCreator {
 			if (e.stopPropagation) {
 				e.stopPropagation(); // stops the browser from redirecting.
 			}
-			if (e.preventDefault)
+			if (e.preventDefault) {
 				e.preventDefault();
-			var data = e.dataTransfer.getData('Text');
-			if (data && isNaN(data)) {
-				//				//item is an json app from iplant
-				var obj = eval("(" + data + ")");
-				var app = @org.iplantc.core.pipelineBuilder.client.dnd.DragCreator::createApp(Lcom/google/gwt/core/client/JavaScriptObject;)(obj);
-				@org.iplantc.core.pipelineBuilder.client.dnd.DragCreator::draggedRecord = app;
 			}
 			listener.@org.iplantc.core.pipelineBuilder.client.dnd.DragListener::drop(Lorg/iplantc/core/pipelineBuilder/client/json/IPCType;)(rec);
 		}
@@ -118,15 +108,15 @@ public class DragCreator {
 		element.addEventListener('dragleave', handleDragLeave, false);
 		element.addEventListener('drop', handleDrop, false);
 		element.addEventListener('dragend', handleDragEnd, false);
-	}-*/;
+    }-*/;
 
 	public static native void addDrop(Element element, IPCType rec, DropListener listener) /*-{
 		function handleDragOver(e) {
 			if (e.stopPropagation) {
 				e.stopPropagation(); // stops the browser from redirecting.
 			}
-			if(e.preventDefault)
-			e.preventDefault();
+			if (e.preventDefault)
+				e.preventDefault();
 			var canDrop = listener.@org.iplantc.core.pipelineBuilder.client.dnd.DropListener::dragOver(Lorg/iplantc/core/pipelineBuilder/client/json/IPCType;)(rec);
 			if (canDrop)
 				e.dataTransfer.dropEffect = 'copy';
@@ -140,8 +130,8 @@ public class DragCreator {
 			if (e.stopPropagation) {
 				e.stopPropagation(); // stops the browser from redirecting.
 			}
-			if(e.preventDefault)
-			e.preventDefault();
+			if (e.preventDefault)
+				e.preventDefault();
 			var canDrop = listener.@org.iplantc.core.pipelineBuilder.client.dnd.DropListener::dragEnter(Lorg/iplantc/core/pipelineBuilder/client/json/IPCType;)(rec);
 			if (canDrop)
 				e.dataTransfer.dropEffect = 'copy';
@@ -159,14 +149,8 @@ public class DragCreator {
 			if (e.stopPropagation) {
 				e.stopPropagation(); // stops the browser from redirecting.
 			}
-			if (e.preventDefault)
+			if (e.preventDefault) {
 				e.preventDefault();
-			var data = e.dataTransfer.getData('Text');
-			if (isNaN(data)) {
-				//				//item is an json app from iplant
-				var obj = eval("(" + data + ")");
-				var app = @org.iplantc.core.pipelineBuilder.client.dnd.DragCreator::createApp(Lcom/google/gwt/core/client/JavaScriptObject;)(obj);
-				@org.iplantc.core.pipelineBuilder.client.dnd.DragCreator::draggedRecord = app;
 			}
 			listener.@org.iplantc.core.pipelineBuilder.client.dnd.DropListener::drop(Lorg/iplantc/core/pipelineBuilder/client/json/IPCType;)(rec);
 		}
@@ -184,65 +168,10 @@ public class DragCreator {
 		addEvent(element, 'dragover', handleDragOver);
 		addEvent(element, 'dragleave', handleDragLeave);
 		addEvent(element, 'drop', handleDrop);
-	}-*/;
+    }-*/;
 
 	public static IPCType getDragSource() {
 		return draggedRecord;
-	}
-
-	private static App createApp(String name, String description, String id) {
-		App app = new App();
-		app.setName(name);
-		app.setDescription(description);
-		app.setId(1);
-		app.setID(id);
-		return app;
-	}
-
-	private static App createApp(com.google.gwt.core.client.JavaScriptObject json) {
-		return createApp(new JSONObject(json));
-	}
-
-	@Deprecated
-	public static App createApp(JSONObject json) {
-		App app = new App();
-		app.setName(((JSONString) json.get("name")).stringValue());
-		app.setDescription(((JSONString) json.get("description")).stringValue());
-		app.setId(1);
-		app.setID(((JSONString) json.get("id")).stringValue());
-		JSONArray inputs = (JSONArray) json.get("inputs");
-		app.setInputJson(inputs);
-		for (int i = 0; i < inputs.size(); i++) {
-			Input input = new Input();
-			JSONObject obj = (JSONObject) inputs.get(i);
-			JSONObject dataObj = (JSONObject) obj.get("data_object");
-			if (dataObj != null) {
-				input.setName(((JSONString) dataObj.get("name")).stringValue());
-				input.setDescription(((JSONString) dataObj.get("description")).stringValue());
-				input.setId(1);
-				input.setRequired(((JSONBoolean) dataObj.get("required")).booleanValue());
-				input.setType("File:" + ((JSONString) dataObj.get("format")).stringValue());
-				input.setID(((JSONString) dataObj.get("id")).stringValue());
-				app.addInput(input);
-			}
-		}
-		JSONArray outputs = (JSONArray) json.get("outputs");
-		app.setOutputJson(outputs);
-		for (int i = 0; i < outputs.size(); i++) {
-			Output output = new Output();
-			JSONObject obj = (JSONObject) outputs.get(i);
-			JSONObject dataObj = (JSONObject) obj.get("data_object");
-			if (dataObj != null) {
-				output.setName(((JSONString) dataObj.get("name")).stringValue());
-				output.setDescription(((JSONString) dataObj.get("description")).stringValue());
-				output.setId(1);
-				output.setType(((JSONString) dataObj.get("format")).stringValue());
-				output.setID(((JSONString) dataObj.get("id")).stringValue());
-				app.addOutput(output);
-			}
-		}
-
-		return app;
 	}
 
     public static App createApp(PipelineApp json) {

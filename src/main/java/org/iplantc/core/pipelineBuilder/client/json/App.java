@@ -6,8 +6,6 @@ import java.util.Vector;
 
 import org.iplantc.core.pipelineBuilder.client.json.autobeans.PipelineAppData;
 
-import com.google.gwt.json.client.JSONArray;
-
 
 public class App extends IPCType{
 	/**
@@ -22,8 +20,6 @@ public class App extends IPCType{
 	private String creator;
 	private String program;
 	private boolean stared = false;
-	private JSONArray inputJson;
-	private JSONArray outputJson;
 	private List<PipelineAppData> inputAppData;
     private List<PipelineAppData> outputAppData;
 
@@ -126,26 +122,6 @@ public class App extends IPCType{
 	
 	public String getID(){
 		return ID; 
-	}
-
-    @Deprecated
-	public JSONArray getInputJson() {
-		return inputJson;
-	}
-
-    @Deprecated
-	public void setInputJson(JSONArray inputJson) {
-		this.inputJson = inputJson;
-	}
-
-    @Deprecated
-	public JSONArray getOutputJson() {
-		return outputJson;
-	}
-
-    @Deprecated
-	public void setOutputJson(JSONArray outputJson) {
-		this.outputJson = outputJson;
 	}
 
 	public List<PipelineAppData> getAppDataInputs() {
