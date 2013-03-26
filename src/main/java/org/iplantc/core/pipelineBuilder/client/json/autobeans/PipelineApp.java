@@ -2,21 +2,26 @@ package org.iplantc.core.pipelineBuilder.client.json.autobeans;
 
 import java.util.List;
 
+import com.google.gwt.user.client.ui.HasName;
+import com.google.web.bindery.autobean.shared.AutoBean.PropertyName;
+
 /**
  * An AutoBean interface for a Pipeline App.
  * 
  * @author psarando
  *
  */
-public interface PipelineApp {
+public interface PipelineApp extends HasName {
 
     public String getId();
 
     public void setId(String id);
 
-    public String getName();
+    @PropertyName("template_id")
+    public String getTemplateId();
 
-    public void setName(String name);
+    @PropertyName("template_id")
+    public void setTemplateId(String template_id);
 
     public String getDescription();
 

@@ -25,6 +25,7 @@ public class App extends IPCType{
 
 	private int publicId;
 	private String ID;
+    private String templateId;
 
 	public App(int id) {
 		this.id = id;
@@ -138,5 +139,13 @@ public class App extends IPCType{
 
     public void setAppDataOutputs(List<PipelineAppData> outputs) {
         outputAppData = outputs;
+    }
+
+    public String getTemplateId() {
+        return templateId;
+    }
+
+    public void setTemplateId(String templateId) {
+        this.templateId = templateId;
     }
 }

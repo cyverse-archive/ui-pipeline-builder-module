@@ -1,20 +1,18 @@
 package org.iplantc.core.pipelineBuilder.client.json.autobeans;
 
+import com.google.gwt.user.client.ui.HasName;
+
 /**
  * An AutoBean interface for Pipeline App Inputs and Outputs.
  * 
  * @author psarando
  *
  */
-public interface PipelineAppData {
+public interface PipelineAppData extends HasName {
 
     public String getId();
 
     public void setId(String id);
-
-    public String getName();
-
-    public void setName(String name);
 
     public String getDescription();
 
