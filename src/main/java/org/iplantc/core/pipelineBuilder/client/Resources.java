@@ -19,7 +19,6 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.CssResource.NotStrict;
-import com.google.gwt.resources.client.DataResource;
 
 public interface Resources extends ClientBundle {
 	public static final Resources INSTANCE = GWT.create(Resources.class);
@@ -27,14 +26,5 @@ public interface Resources extends ClientBundle {
 	@NotStrict
 	@Source("css/PipelineBuilder.css")
 	public CssResource css();
-	
-	@Source("images/down.png")
-	DataResource down();
-	
-	@Source("images/trash_can_open.png")
-	DataResource trashOpen();
-	
-	@Source("images/trash_can_close.png")
-	DataResource trashClose();
 	
 }

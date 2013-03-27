@@ -44,7 +44,7 @@ public class PipelineCreator extends Composite {
     private final PipelineAutoBeanFactory factory = GWT.create(PipelineAutoBeanFactory.class);;
 
 	public PipelineCreator() {
-	    Resources.INSTANCE.css().ensureInjected();
+	   Resources.INSTANCE.css().ensureInjected();
 
 	    workspace = new PipelineWorkspace(new Pipeline("", "", false, 0));
 		workspace.setHeight("100%");

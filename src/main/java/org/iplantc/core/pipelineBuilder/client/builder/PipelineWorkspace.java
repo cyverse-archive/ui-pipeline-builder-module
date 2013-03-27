@@ -15,7 +15,7 @@
  */
 package org.iplantc.core.pipelineBuilder.client.builder;
 
-import org.iplantc.core.pipelineBuilder.client.Resources;
+import org.iplantc.core.resources.client.IplantResources;
 import org.iplantc.core.pipelineBuilder.client.dnd.DragCreator;
 import org.iplantc.core.pipelineBuilder.client.dnd.DropListener;
 import org.iplantc.core.pipelineBuilder.client.json.App;
@@ -39,7 +39,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public class PipelineWorkspace extends Composite {
-	private final Image trashImg = new Image(Resources.INSTANCE.trashClose().getSafeUri().asString());
+	private final Image trashImg = new Image(IplantResources.RESOURCES.trashClose().getSafeUri().asString());
 	private Workspace workspace;
 	private TextBox nameBox;
 	private TextBox descBox;
@@ -81,24 +81,24 @@ public class PipelineWorkspace extends Composite {
 		DragCreator.addDrop(trashImg.getElement(), new TrashCan(), new DropListener() {
 			@Override
             public void drop(IPCType record) {
-				trashImg.setUrl(Resources.INSTANCE.trashClose().getSafeUri().asString());
+				trashImg.setUrl(IplantResources.RESOURCES.trashClose().getSafeUri().asString());
 				DragCreator.getDragSource().setDragAction(DragCreator.DELETE);
 			}
 
 			@Override
             public boolean dragOver(IPCType record) {
-				trashImg.setUrl(Resources.INSTANCE.trashOpen().getSafeUri().asString());
+				trashImg.setUrl(IplantResources.RESOURCES.trashOpen().getSafeUri().asString());
 				return true;
 			}
 
 			@Override
             public void dragLeave(IPCType record) {
-				trashImg.setUrl(Resources.INSTANCE.trashClose().getSafeUri().asString());
+				trashImg.setUrl(IplantResources.RESOURCES.trashClose().getSafeUri().asString());
 			}
 
 			@Override
             public boolean dragEnter(IPCType record) {
-				trashImg.setUrl(Resources.INSTANCE.trashOpen().getSafeUri().asString());
+				trashImg.setUrl(IplantResources.RESOURCES.trashOpen().getSafeUri().asString());
 				return true;
 			}
 

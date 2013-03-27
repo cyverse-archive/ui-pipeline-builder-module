@@ -16,7 +16,7 @@
 package org.iplantc.core.pipelineBuilder.client.builder;
 
 
-import org.iplantc.core.pipelineBuilder.client.Resources;
+import org.iplantc.core.resources.client.IplantResources;
 
 import com.google.gwt.user.client.ui.HTML;
 
@@ -24,6 +24,6 @@ public class Arrow extends HTML{
 
 	public Arrow(){
 		setStyleName("block-arrow");
-		setHTML("<center><img src='"+Resources.INSTANCE.down().getSafeUri().asString()+"'/></center>");
+		setHTML("<center><img src='"+IplantResources.RESOURCES.down().getSafeUri().asString()+"'/></center>");
 	}
 }

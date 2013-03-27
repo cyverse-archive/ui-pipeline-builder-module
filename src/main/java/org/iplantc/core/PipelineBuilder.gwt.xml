@@ -5,6 +5,7 @@
 	<inherits name='com.google.gwt.json.JSON' />
 
 	<!-- Other module inherits                                      -->
+	<inherits name="org.iplantc.core.ui-resources"/>
 
 	<!-- Specify the app entry point class.                         -->
 
