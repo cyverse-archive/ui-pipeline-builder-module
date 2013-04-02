@@ -158,7 +158,7 @@ public class PipelineCreator extends Composite {
                 App mappedApp = ((PipeApp)mappedTo).getApp();
                 PipelineAppMapping jsonMap = factory.appMapping().as();
                 jsonMap.setStep(mappedTo.getPosition() + 1);
-                jsonMap.setId(mappedApp.getID());
+                jsonMap.setId(mappedApp.getTemplateId());
                 ArrayList<Input> inputs = mappings.get(mappedTo);
                 Map<String, String> map = new HashMap<String, String>();
                 for (Input input : inputs) {
