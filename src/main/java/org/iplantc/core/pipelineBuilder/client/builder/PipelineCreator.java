@@ -72,6 +72,8 @@ public class PipelineCreator extends Composite {
     private Pipeline buildPipeline(org.iplantc.core.pipelineBuilder.client.json.autobeans.Pipeline json) {
         Pipeline ret = new Pipeline();
         List<PipelineApp> apps = json.getApps();
+
+        ret.setWorkflowId(json.getId());
         ret.setDescription(json.getDescription());
         ret.setName(json.getName());
 
@@ -124,11 +126,14 @@ public class PipelineCreator extends Composite {
      */
     public org.iplantc.core.pipelineBuilder.client.json.autobeans.Pipeline getPipeline() {
         org.iplantc.core.pipelineBuilder.client.json.autobeans.Pipeline ret = factory.pipeline().as();
-        ret.setName(workspace.getPipeline().getName());
-        ret.setDescription(workspace.getPipeline().getDescription());
+        Pipeline pipeline = workspace.getPipeline();
+
+        ret.setId(pipeline.getWorkflowId());
+        ret.setName(pipeline.getName());
+        ret.setDescription(pipeline.getDescription());
 
         List<PipelineApp> apps = new ArrayList<PipelineApp>();
-        Vector<PipeComponent> steps = workspace.getPipeline().getSteps();
+        Vector<PipeComponent> steps = pipeline.getSteps();
         for (PipeComponent step : steps) {
             App app = ((PipeApp)step).getApp();
 

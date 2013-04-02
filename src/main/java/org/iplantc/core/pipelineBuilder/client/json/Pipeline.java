@@ -25,6 +25,7 @@ public class Pipeline extends IPCType {
 	private static final long serialVersionUID = 4189104767853411003L;
 
 	private Vector<PipeComponent> steps;
+    private String workflowId;
 	private String name;
 	private String description;
 	private String creator;
@@ -71,7 +72,21 @@ public class Pipeline extends IPCType {
 		steps.add(step);
 	}
 
-	public String getName() {
+	/**
+     * @return The Workflow service ID.
+     */
+    public String getWorkflowId() {
+        return workflowId;
+    }
+
+    /**
+     * @param workflowId the Workflow service ID to set.
+     */
+    public void setWorkflowId(String workflowId) {
+        this.workflowId = workflowId;
+    }
+
+    public String getName() {
 		return name;
 	}
 
