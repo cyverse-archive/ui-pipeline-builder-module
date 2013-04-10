@@ -3,7 +3,7 @@
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.iplantc.core</groupId>
-    <artifactId>pipeline-builder</artifactId>
+    <artifactId>ui-pipeline-builder</artifactId>
     <packaging>jar</packaging>
     <version>gxt3Sandbox-SNAPSHOT</version>
     <name>The iPlant Collaborative Pipeline Builder plugin.</name>
@@ -55,7 +55,7 @@
       </dependency>
     </dependencies>
     <build>
-        <finalName>pipeline-builder</finalName>
+        <finalName>ui-pipeline-builder</finalName>
         <outputDirectory>${basedir}/war/WEB-INF/classes</outputDirectory>
         <plugins>
             <plugin>
