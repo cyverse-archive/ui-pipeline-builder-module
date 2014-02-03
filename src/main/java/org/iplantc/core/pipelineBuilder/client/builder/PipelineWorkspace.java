@@ -15,7 +15,7 @@
  */
 package org.iplantc.core.pipelineBuilder.client.builder;
 
-import org.iplantc.core.resources.client.IplantResources;
+import org.iplantc.de.resources.client.IplantResources;
 import org.iplantc.core.pipelineBuilder.client.dnd.DragCreator;
 import org.iplantc.core.pipelineBuilder.client.dnd.DropListener;
 import org.iplantc.core.pipelineBuilder.client.json.App;
