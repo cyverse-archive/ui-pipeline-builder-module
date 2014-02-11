@@ -15,8 +15,6 @@
  */
 package org.iplantc.de.pipelineBuilder.client.ui;
 
-import java.util.Vector;
-
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -34,6 +32,8 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+
+import java.util.Vector;
 
 public class MenuButton extends VerticalPanel implements MouseDownHandler, MouseUpHandler, ClickHandler, MouseOverHandler, MouseOutHandler {
 	private ClickHandler handler;

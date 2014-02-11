@@ -15,13 +15,13 @@
  */
 package org.iplantc.de.pipelineBuilder.client.builder;
 
-import org.iplantc.de.resources.client.IplantResources;
 import org.iplantc.de.pipelineBuilder.client.dnd.DragCreator;
 import org.iplantc.de.pipelineBuilder.client.dnd.DropListener;
 import org.iplantc.de.pipelineBuilder.client.json.App;
 import org.iplantc.de.pipelineBuilder.client.json.IPCType;
 import org.iplantc.de.pipelineBuilder.client.json.Pipeline;
 import org.iplantc.de.pipelineBuilder.client.ui.SimpleLabel;
+import org.iplantc.de.resources.client.IplantResources;
 
 import com.google.gwt.event.dom.client.BlurEvent;
 import com.google.gwt.event.dom.client.BlurHandler;

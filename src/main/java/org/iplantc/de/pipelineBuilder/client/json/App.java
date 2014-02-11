@@ -1,10 +1,10 @@
 package org.iplantc.de.pipelineBuilder.client.json;
 
+import org.iplantc.de.pipelineBuilder.client.json.autobeans.PipelineAppData;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
-
-import org.iplantc.de.pipelineBuilder.client.json.autobeans.PipelineAppData;
 
 
 public class App extends IPCType{

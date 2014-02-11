@@ -15,8 +15,6 @@
  */
 package org.iplantc.de.pipelineBuilder.client.dnd;
 
-import java.util.List;
-
 import org.iplantc.de.pipelineBuilder.client.json.App;
 import org.iplantc.de.pipelineBuilder.client.json.IPCType;
 import org.iplantc.de.pipelineBuilder.client.json.Input;
@@ -27,6 +25,8 @@ import org.iplantc.de.pipelineBuilder.client.json.autobeans.PipelineAppData;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.user.client.ui.Image;
+
+import java.util.List;
 
 public class DragCreator {
 

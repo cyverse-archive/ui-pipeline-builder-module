@@ -1,9 +1,9 @@
 package org.iplantc.de.pipelineBuilder.client.json.autobeans;
 
-import java.util.List;
-
 import com.google.gwt.user.client.ui.HasName;
 import com.google.web.bindery.autobean.shared.AutoBean.PropertyName;
+
+import java.util.List;
 
 /**
  * An AutoBean interface for a Pipeline App.

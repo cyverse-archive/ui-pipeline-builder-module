@@ -15,8 +15,6 @@
  */
 package org.iplantc.de.pipelineBuilder.client.builder;
 
-import java.util.Vector;
-
 import org.iplantc.de.pipelineBuilder.client.dnd.DragCreator;
 import org.iplantc.de.pipelineBuilder.client.dnd.DragListener;
 import org.iplantc.de.pipelineBuilder.client.json.App;
@@ -38,6 +36,8 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+
+import java.util.Vector;
 
 public class Block extends Composite implements DragListener {
 	private PipeComponent app;

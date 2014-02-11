@@ -15,8 +15,6 @@
  */
 package org.iplantc.de.pipelineBuilder.client.builder;
 
-import java.util.Vector;
-
 import org.iplantc.de.pipelineBuilder.client.dnd.DragCreator;
 import org.iplantc.de.pipelineBuilder.client.dnd.DropListener;
 import org.iplantc.de.pipelineBuilder.client.json.App;
@@ -29,6 +27,8 @@ import org.iplantc.de.pipelineBuilder.client.json.UserApp;
 
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
+
+import java.util.Vector;
 
 public class Workspace extends FlowPanel implements DropListener, BlockChangeListener {
 	private Vector<PipeComponent> wrappers;

@@ -15,12 +15,6 @@
  */
 package org.iplantc.de.pipelineBuilder.client.builder;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Vector;
-
 import org.iplantc.de.pipelineBuilder.client.Resources;
 import org.iplantc.de.pipelineBuilder.client.dnd.DragCreator;
 import org.iplantc.de.pipelineBuilder.client.json.App;
@@ -36,6 +30,12 @@ import org.iplantc.de.pipelineBuilder.client.json.autobeans.PipelineAutoBeanFact
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Vector;
 
 public class PipelineCreator extends Composite {
 

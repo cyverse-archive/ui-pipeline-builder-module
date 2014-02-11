@@ -15,9 +15,9 @@
  */
 package org.iplantc.de.pipelineBuilder.client.builder;
 
-import java.util.Vector;
-
 import org.iplantc.de.pipelineBuilder.client.json.PipeComponent;
+
+import java.util.Vector;
 
 
 public interface BlockChangeListener {
