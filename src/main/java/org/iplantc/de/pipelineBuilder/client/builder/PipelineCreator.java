@@ -15,6 +15,9 @@
  */
 package org.iplantc.de.pipelineBuilder.client.builder;
 
+import org.iplantc.de.client.models.pipelines.PipelineApp;
+import org.iplantc.de.client.models.pipelines.PipelineAppMapping;
+import org.iplantc.de.client.models.pipelines.PipelineAutoBeanFactory;
 import org.iplantc.de.pipelineBuilder.client.Resources;
 import org.iplantc.de.pipelineBuilder.client.dnd.DragCreator;
 import org.iplantc.de.pipelineBuilder.client.json.App;
@@ -23,9 +26,6 @@ import org.iplantc.de.pipelineBuilder.client.json.Output;
 import org.iplantc.de.pipelineBuilder.client.json.PipeApp;
 import org.iplantc.de.pipelineBuilder.client.json.PipeComponent;
 import org.iplantc.de.pipelineBuilder.client.json.Pipeline;
-import org.iplantc.de.pipelineBuilder.client.json.autobeans.PipelineApp;
-import org.iplantc.de.pipelineBuilder.client.json.autobeans.PipelineAppMapping;
-import org.iplantc.de.pipelineBuilder.client.json.autobeans.PipelineAutoBeanFactory;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.Composite;
@@ -61,7 +61,7 @@ public class PipelineCreator extends Composite {
      * 
      * @param json The json representation of a Pipeline
      */
-    public void loadPipeline(org.iplantc.de.pipelineBuilder.client.json.autobeans.Pipeline json) {
+    public void loadPipeline(org.iplantc.de.client.models.pipelines.Pipeline json) {
         main.remove(workspace);
         workspace = new PipelineWorkspace(buildPipeline(json));
         workspace.setHeight("100%");
@@ -69,7 +69,7 @@ public class PipelineCreator extends Composite {
         main.insert(workspace, 0);
     }
 
-    private Pipeline buildPipeline(org.iplantc.de.pipelineBuilder.client.json.autobeans.Pipeline json) {
+    private Pipeline buildPipeline(org.iplantc.de.client.models.pipelines.Pipeline json) {
         Pipeline ret = new Pipeline();
         List<PipelineApp> apps = json.getApps();
 
@@ -124,8 +124,8 @@ public class PipelineCreator extends Composite {
      * 
      * @return the AutoBean of the new pipeline
      */
-    public org.iplantc.de.pipelineBuilder.client.json.autobeans.Pipeline getPipeline() {
-        org.iplantc.de.pipelineBuilder.client.json.autobeans.Pipeline ret = factory.pipeline().as();
+    public org.iplantc.de.client.models.pipelines.Pipeline getPipeline() {
+        org.iplantc.de.client.models.pipelines.Pipeline ret = factory.pipeline().as();
         Pipeline pipeline = workspace.getPipeline();
 
         ret.setId(pipeline.getWorkflowId());
