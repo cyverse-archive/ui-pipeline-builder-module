@@ -15,12 +15,12 @@
  */
 package org.iplantc.de.pipelineBuilder.client.dnd;
 
+import org.iplantc.de.client.models.pipelines.PipelineApp;
+import org.iplantc.de.client.models.pipelines.PipelineAppData;
 import org.iplantc.de.pipelineBuilder.client.json.App;
 import org.iplantc.de.pipelineBuilder.client.json.IPCType;
 import org.iplantc.de.pipelineBuilder.client.json.Input;
 import org.iplantc.de.pipelineBuilder.client.json.Output;
-import org.iplantc.de.pipelineBuilder.client.json.autobeans.PipelineApp;
-import org.iplantc.de.pipelineBuilder.client.json.autobeans.PipelineAppData;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.Element;
